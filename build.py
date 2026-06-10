@@ -336,10 +336,13 @@ for i, (src, folder, title) in enumerate(entries, 1):
         NAMES[rel] = name
     tp = os.path.join(THUMBS, name)
     fp = os.path.join(FULL, name)
-    if not os.path.exists(tp):
+    def stale(out):
+        # 來源檔比輸出檔新（圖被換過）就重新轉檔
+        return not os.path.exists(out) or os.path.getmtime(src) > os.path.getmtime(out)
+    if stale(tp):
         subprocess.run(["sips", "-s", "format", "jpeg", "-s", "formatOptions", "75",
                         "-Z", "520", src, "--out", tp], capture_output=True)
-    if not os.path.exists(fp):
+    if stale(fp):
         subprocess.run(["sips", "-s", "format", "jpeg", "-s", "formatOptions", "82",
                         "-Z", "1800", src, "--out", fp], capture_output=True)
     if not (os.path.exists(tp) and os.path.exists(fp)):
