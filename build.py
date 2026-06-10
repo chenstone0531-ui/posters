@@ -245,6 +245,9 @@ FOLDER_PREFER_FILENAME = {"粽邪1.2海報", "痞子英雄1.2", "近期的影視
 
 OTHER = "其他設計作品"
 
+# 不放上網站的作品
+EXCLUDE_FILMS = {"鬼才之道"}
+
 def match_patterns(name):
     for key, film, year in PATTERNS:
         if key.lower() in name.lower():
@@ -311,6 +314,9 @@ manifest = []
 group_years = {}     # 片名 -> 確定年份
 group_guess = {}     # 片名 -> 檔案日期推估
 for i, (src, folder, title) in enumerate(entries, 1):
+    film, year = classify(os.path.basename(src), folder)
+    if film in EXCLUDE_FILMS:
+        continue
     rel = os.path.relpath(src, ROOT)
     name = NAMES.get(rel)
     if not name:
@@ -331,7 +337,6 @@ for i, (src, folder, title) in enumerate(entries, 1):
     if w == 0 or h == 0:
         print(f"  跳過（讀不到尺寸）: {src}", flush=True)
         continue
-    film, year = classify(os.path.basename(src), folder)
     myear = datetime.datetime.fromtimestamp(os.path.getmtime(src)).year
     if year:
         group_years[film] = year
