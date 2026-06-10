@@ -19,6 +19,8 @@
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+  img { max-width: 100%; }
+  body { overflow-x: hidden; }
   body {
     background:
       radial-gradient(ellipse 90% 60% at 50% -10%, rgba(169,142,93,.07), transparent 60%),
@@ -304,7 +306,7 @@
     transform: translateY(-3px);
     box-shadow: 0 12px 30px rgba(0,0,0,.55);
   }
-  .item img { width: 100%; display: block; background: var(--bg2); }
+  .item img { width: 100%; height: auto; display: block; background: var(--bg2); }
   .item .label {
     position: absolute;
     inset: auto 0 0 0;
@@ -407,9 +409,29 @@
   }
 
   @media (max-width: 600px) {
+    header { padding: 40px 14px 24px; }
+    header h1 { font-size: 27px; letter-spacing: .08em; white-space: nowrap; }
+    header p.sub { letter-spacing: .3em; text-indent: .3em; font-size: 12px; }
+    header .count { font-size: 12px; padding: 6px 16px; }
+    .deco-line { max-width: 78%; }
+    .marquee { margin-top: 24px; }
+    .marquee img { height: 108px; border-radius: 6px; }
+    .marquee .track { gap: 8px; padding: 10px 0 6px; }
+    .marquee .track.rev { padding: 2px 0 12px; }
+    .toolbar { padding: 10px 12px; gap: 8px; }
+    .toolbar input[type="search"] { flex: 1 1 130px; max-width: none; padding: 8px 14px; }
+    .toolbar select { flex: 0 1 auto; max-width: 46%; padding: 8px 10px; font-size: 13px; }
+    .toolbar .info { display: none; }
+    .year-divider { margin: 36px 0 6px; gap: 12px; }
+    .year-divider .y { font-size: 28px; }
+    .film-head { padding-left: 10px; gap: 8px; }
+    .film-head h2 { font-size: 17px; }
     .masonry { columns: 2 140px; column-gap: 10px; }
-    .item { margin-bottom: 10px; }
+    .item { margin-bottom: 10px; border-radius: 6px; }
     .lb-btn { width: 40px; height: 40px; font-size: 18px; }
+    .lb-prev { left: 8px; }
+    .lb-next { right: 8px; }
+    .lightbox img { max-width: 96vw; max-height: 80vh; }
   }
 </style>
 </head>
@@ -501,41 +523,45 @@
     resize();
     window.addEventListener('resize', resize);
 
-    const N = Math.min(110, Math.floor(window.innerWidth / 12));
-    const golds = ['233,221,187', '210,191,142', '169,142,93', '194,170,118'];
+    // 細小金塵：像被風吹動，整片緩緩流動，偶有陣風
+    const N = Math.min(260, Math.floor(window.innerWidth / 4.5));
+    const golds = ['233,221,187', '218,200,156', '210,191,142', '186,160,108', '169,142,93'];
     const ps = [];
     for (let i = 0; i < N; i++) {
       ps.push({
         x: Math.random(),
         y: Math.random(),
-        r: .6 + Math.random() * 1.7,          // 粒子大小
-        vy: .04 + Math.random() * .12,         // 上飄速度
-        sway: 6 + Math.random() * 22,          // 左右搖擺幅度
-        swaySpeed: .2 + Math.random() * .5,
-        tw: .5 + Math.random() * 1.6,          // 閃爍速度
+        r: .3 + Math.random() * .9,            // 細小如塵
+        sp: .35 + Math.random() * .95,         // 個別風感係數（近快遠慢）
+        drift: -.012 + Math.random() * .024,   // 微微上下飄移
+        wob: .4 + Math.random() * 1.1,         // 上下波動頻率
+        wobAmp: 2 + Math.random() * 9,         // 波動幅度
+        tw: .6 + Math.random() * 2.2,          // 閃爍速度
         phase: Math.random() * Math.PI * 2,
         color: golds[Math.floor(Math.random() * golds.length)]
       });
     }
 
+    let last = 0;
     function draw(t) {
-      ctx.clearRect(0, 0, W, H);
       const s = t / 1000;
+      const dt = Math.min((t - last) / 1000, .05) || .016;
+      last = t;
+      // 風：基礎風 + 緩慢起伏的陣風
+      const wind = 14 + 17 * (0.5 + 0.5 * Math.sin(s * .22)) + 6 * Math.sin(s * .61 + 2);
+      ctx.clearRect(0, 0, W, H);
       for (const p of ps) {
-        p.y -= p.vy / 100;                     // 緩緩往上
-        if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); }
-        const x = p.x * W + Math.sin(s * p.swaySpeed + p.phase) * p.sway;
-        const y = p.y * H;
-        const a = Math.max(0, .12 + .75 * (0.5 + 0.5 * Math.sin(s * p.tw * 2 + p.phase)));
-        // 光暈
-        ctx.beginPath();
-        ctx.arc(x, y, p.r * 3, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + p.color + ',' + (a * .08).toFixed(3) + ')';
-        ctx.fill();
-        // 粒子本體
+        p.x += (wind * p.sp * dt) / W;          // 順風橫飄
+        p.y += p.drift * dt;
+        if (p.x > 1.02) { p.x = -0.02; p.y = Math.random(); }
+        if (p.y < -0.03) p.y = 1.02;
+        if (p.y > 1.03) p.y = -0.02;
+        const x = p.x * W;
+        const y = p.y * H + Math.sin(s * p.wob + p.phase) * p.wobAmp;
+        const a = Math.max(0, .1 + .8 * (0.5 + 0.5 * Math.sin(s * p.tw * 2 + p.phase)));
         ctx.beginPath();
         ctx.arc(x, y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(' + p.color + ',' + (a * .85).toFixed(3) + ')';
+        ctx.fillStyle = 'rgba(' + p.color + ',' + (a * .8).toFixed(3) + ')';
         ctx.fill();
       }
       requestAnimationFrame(draw);
@@ -568,9 +594,11 @@
           img.title = p.film;
           img.loading = round === 0 ? 'eager' : 'lazy';
           img.addEventListener('click', () => {
+            // 篩選到該片並直接放大這張海報
             filmSelect.value = p.film;
             render();
-            document.querySelector('.toolbar').scrollIntoView({ behavior: 'smooth' });
+            const idx = flat.indexOf(p.it);
+            openLightbox(idx >= 0 ? idx : 0);
           });
           row.el.appendChild(img);
         }
