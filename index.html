@@ -107,36 +107,7 @@
     pointer-events: none;
     z-index: 0;
   }
-  /* 首映式探照燈：兩道光柱左右掃動 */
-  .beam {
-    position: absolute;
-    top: -10%;
-    left: 50%;
-    width: clamp(130px, 20vw, 280px);
-    height: 135%;
-    margin-left: clamp(-140px, -10vw, -65px);
-    background: linear-gradient(to bottom,
-      rgba(233,221,187,.34),
-      rgba(218,200,156,.14) 50%,
-      transparent 88%);
-    clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
-    filter: blur(9px);
-    transform-origin: 50% 0;
-    mix-blend-mode: screen;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .beam.l { animation: sweep-l 9s ease-in-out infinite alternate; }
-  .beam.r { animation: sweep-r 9s ease-in-out infinite alternate; animation-delay: -4.5s; }
-  @keyframes sweep-l {
-    from { transform: rotate(-40deg); }
-    to   { transform: rotate(-5deg); }
-  }
-  @keyframes sweep-r {
-    from { transform: rotate(40deg); }
-    to   { transform: rotate(5deg); }
-  }
-  header > *:not(#dustCanvas):not(.beam) { position: relative; z-index: 1; }
+  header > *:not(#dustCanvas) { position: relative; z-index: 1; }
   header::before {
     content: "";
     position: absolute;
@@ -193,9 +164,12 @@
     padding: 14px 0 10px;
   }
   .marquee .track.rev {
-    animation-direction: reverse;
-    animation-duration: 70s;
+    animation: marquee-scroll-rev 70s linear infinite;
     padding: 4px 0 18px;
+  }
+  @keyframes marquee-scroll-rev {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
   }
   .marquee:hover .track { animation-play-state: paused; }
   .marquee img {
@@ -468,8 +442,6 @@
 
 <header>
   <canvas id="dustCanvas"></canvas>
-  <div class="beam l"></div>
-  <div class="beam r"></div>
   <h1 class="gold-text">陳正源 · 海報作品集</h1>
   <div class="deco-line"><span class="diamond"></span></div>
   <p class="sub">電影 × 戲劇 視覺設計</p>
@@ -500,7 +472,7 @@
 
 <footer>© 陳正源 電影與戲劇海報作品集</footer>
 
-<script src="images.js"></script>
+<script src="images.js?v=4"></script>
 <script>
 (function () {
   const content = document.getElementById('content');
