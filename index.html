@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>陳正源 — 電影與戲劇海報作品集</title>
+<title>陳正源 STONE CHEN — 電影與戲劇海報作品集</title>
 <style>
   :root {
     --bg: #0a0a0c;
@@ -138,6 +138,11 @@
     font-size: clamp(34px, 6vw, 60px);
     font-weight: 700;
     letter-spacing: .14em;
+  }
+  header h1 .en {
+    font-size: .52em;
+    letter-spacing: .12em;
+    vertical-align: .06em;
   }
   header p.sub {
     margin-top: 16px;
@@ -423,7 +428,7 @@
 
   @media (max-width: 600px) {
     header { padding: 40px 14px 24px; }
-    header h1 { font-size: 27px; letter-spacing: .08em; white-space: nowrap; }
+    header h1 { font-size: 23px; letter-spacing: .06em; white-space: nowrap; }
     header p.sub { letter-spacing: .3em; text-indent: .3em; font-size: 12px; }
     header .count { font-size: 12px; padding: 6px 16px; }
     .deco-line { max-width: 78%; }
@@ -452,7 +457,7 @@
 
 <header>
   <canvas id="dustCanvas"></canvas>
-  <h1 class="gold-text">陳正源 · 海報作品集</h1>
+  <h1 class="gold-text">陳正源 <span class="en">STONE CHEN</span> · 海報作品集</h1>
   <div class="deco-line"><span class="diamond"></span></div>
   <p class="sub">電影 × 戲劇 視覺設計</p>
   <span class="count" id="totalCount"></span>
@@ -480,7 +485,7 @@
   <div class="caption" id="lbCaption"></div>
 </div>
 
-<footer>© 陳正源 電影與戲劇海報作品集</footer>
+<footer>© 陳正源 STONE CHEN 電影與戲劇海報作品集</footer>
 
 <script src="images.js?v=9"></script>
 <script>
