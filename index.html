@@ -11,9 +11,9 @@
     --card: #18181d;
     --text: #f2efe8;
     --muted: #9a968e;
-    --accent: #a98e5d;
-    --gold-light: #d2bf8e;
-    --gold-dim: rgba(169,142,93,.38);
+    --accent: #b29760;
+    --gold-light: #dcc99a;
+    --gold-dim: rgba(181,153,100,.48);
     --radius: 8px;
     --serif: "Didot", "Bodoni 72", "Playfair Display", "Songti TC", "Noto Serif TC", "Times New Roman", serif;
   }
@@ -46,7 +46,7 @@
   /* 金色漸層文字：帶緩慢流動的光澤 */
   .gold-text {
     background: linear-gradient(100deg,
-      #94794d 0%, #c9b88a 22%, #e9ddbb 38%, #c9b88a 54%, #856f45 72%, #94794d 100%);
+      #9e8253 0%, #d3c294 22%, #f1e6c6 38%, #d3c294 54%, #8e774a 72%, #9e8253 100%);
     background-size: 220% auto;
     -webkit-background-clip: text;
     background-clip: text;
@@ -259,7 +259,7 @@
     font-weight: 700;
     letter-spacing: .08em;
     line-height: 1;
-    background: linear-gradient(180deg, #ddd2b4, #b7a06c 55%, #6f5a35);
+    background: linear-gradient(180deg, #e6dcbe, #c1aa75 55%, #79633b);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -644,10 +644,10 @@
 
     // 波浪金線：幾條起伏流動的細金線
     const waves = [
-      { yp: .30, amp: 14, len: .0052, speed: .50, alpha: .14, lw: 1.1, phase: 0 },
-      { yp: .46, amp: 22, len: .0036, speed: .32, alpha: .10, lw: 1.4, phase: 2.1 },
-      { yp: .62, amp: 17, len: .0046, speed: .42, alpha: .12, lw: 1.0, phase: 4.2 },
-      { yp: .80, amp: 26, len: .0030, speed: .26, alpha: .08, lw: 1.6, phase: 1.3 }
+      { yp: .30, amp: 14, len: .0052, speed: .50, alpha: .19, lw: 1.5, phase: 0 },
+      { yp: .46, amp: 22, len: .0036, speed: .32, alpha: .14, lw: 1.8, phase: 2.1 },
+      { yp: .62, amp: 17, len: .0046, speed: .42, alpha: .16, lw: 1.4, phase: 4.2 },
+      { yp: .80, amp: 26, len: .0030, speed: .26, alpha: .11, lw: 2.0, phase: 1.3 }
     ];
     function drawWaves(s) {
       for (const w of waves) {
