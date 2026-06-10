@@ -179,6 +179,22 @@ PATTERNS = [
     ("黑熊來了", "黑熊來了", 2019),
     ("黑白", "黑白原來是真的", None),
     ("媽祖", "媽祖", None),
+    # ── 2026-06 新增 ──
+    ("人生海海", "人生海海", None),
+    ("我們六個", "我們六個", 2025),
+    ("催眠麥克風", "催眠麥克風", None),
+    ("世外", "世外", 2025),
+    ("凶宅", "凶宅", None),
+    ("極樂", "極樂", None),
+    ("心之谷", "心之谷（重映）", None),
+    ("看看你有多愛我", "看看你有多愛我", None),
+    ("贖夢", "贖夢", None),
+    ("小孩才做選擇", "小孩才做選擇", None),
+    ("無形", "無形", None),
+    ("NO GOOD", "NO GOOD歐吉桑", None),
+    ("偷生", "偷生", None),
+    ("星與翼的悖論", "星與翼的悖論", None),
+    ("好孩子", "好孩子", None),
 ]
 
 # ── 子資料夾對照表 ──
@@ -222,9 +238,10 @@ FOLDER_MAP = {
     "大尾鱸鰻2": ("大尾鱸鰻2", 2016),
     "地表撐霸海報媒體特映券ok": ("地表撐霸", None),
     "回家": ("回家", None),
+    "新增海報": ("其他設計作品", None),
 }
-# 這兩個資料夾混了不同集數，優先用檔名比對
-FOLDER_PREFER_FILENAME = {"粽邪1.2海報", "痞子英雄1.2", "近期的影視電影作品跟近1.2年賣座的電影"}
+# 這些資料夾混了不同作品，優先用檔名比對
+FOLDER_PREFER_FILENAME = {"粽邪1.2海報", "痞子英雄1.2", "近期的影視電影作品跟近1.2年賣座的電影", "新增海報"}
 
 OTHER = "其他設計作品"
 
@@ -282,12 +299,23 @@ def sips_size(path):
         if "pixelHeight" in line: h = int(line.split(":")[1])
     return w, h
 
-import datetime
+import datetime, hashlib
+# 固定檔名對照表：來源路徑 -> 輸出檔名（確保新增圖片不會打亂既有檔名）
+NAMES_PATH = os.path.join(SITE, "names.json")
+NAMES = {}
+if os.path.exists(NAMES_PATH):
+    with open(NAMES_PATH, encoding="utf-8") as fh:
+        NAMES = json.load(fh)
+
 manifest = []
 group_years = {}     # 片名 -> 確定年份
 group_guess = {}     # 片名 -> 檔案日期推估
 for i, (src, folder, title) in enumerate(entries, 1):
-    name = f"img_{i:04d}.jpg"
+    rel = os.path.relpath(src, ROOT)
+    name = NAMES.get(rel)
+    if not name:
+        name = "p" + hashlib.md5(rel.encode("utf-8")).hexdigest()[:12] + ".jpg"
+        NAMES[rel] = name
     tp = os.path.join(THUMBS, name)
     fp = os.path.join(FULL, name)
     if not os.path.exists(tp):
@@ -328,6 +356,9 @@ for m in manifest:
             if g not in (OTHER, "近期作品精選"):
                 estimated.append(f"{g}（約{y}）")
         films[g] = (y, est)
+
+with open(NAMES_PATH, "w", encoding="utf-8") as fh:
+    json.dump(NAMES, fh, ensure_ascii=False, indent=0)
 
 out = {"films": [{"n": g, "y": y, "e": est} for g, (y, est) in films.items()],
        "items": manifest}
