@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陳正源 — 電影與戲劇海報作品集</title>
+<style>
+  :root {
+    --bg: #0e0e11;
+    --bg2: #16161b;
+    --card: #1c1c22;
+    --text: #f2f0ec;
+    --muted: #9a968e;
+    --accent: #d4a843;
+    --radius: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── 頁首 ── */
+  header {
+    padding: 72px 24px 40px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 70% 100% at 50% 0%, rgba(212,168,67,.10), transparent 70%),
+      var(--bg);
+  }
+  header h1 {
+    font-size: clamp(30px, 5.5vw, 52px);
+    font-weight: 700;
+    letter-spacing: .12em;
+  }
+  header h1 span { color: var(--accent); }
+  header p.sub {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: clamp(14px, 2vw, 17px);
+    letter-spacing: .35em;
+  }
+  header .count {
+    display: inline-block;
+    margin-top: 22px;
+    padding: 6px 18px;
+    border: 1px solid rgba(212,168,67,.4);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: .1em;
+  }
+
+  /* ── 海報輪播帶 ── */
+  .marquee {
+    overflow: hidden;
+    margin-top: 38px;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+  .marquee .track {
+    display: flex;
+    gap: 14px;
+    width: max-content;
+    animation: marquee-scroll 55s linear infinite;
+    will-change: transform;
+    padding: 14px 0 10px;
+  }
+  .marquee .track.rev {
+    animation-direction: reverse;
+    animation-duration: 70s;
+    padding: 4px 0 18px;
+  }
+  .marquee:hover .track { animation-play-state: paused; }
+  .marquee img {
+    height: clamp(120px, 18vw, 185px);
+    width: auto;
+    border-radius: 8px;
+    display: block;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,0,0,.5);
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .marquee img:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 16px 36px rgba(0,0,0,.7), 0 0 0 2px rgba(212,168,67,.55);
+  }
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── 工具列 ── */
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(14,14,17,.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #26262d;
+    padding: 12px clamp(12px, 3vw, 32px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  .toolbar input[type="search"] {
+    flex: 1 1 200px;
+    max-width: 320px;
+    background: var(--card);
+    border: 1px solid #2e2e36;
+    border-radius: 999px;
+    padding: 9px 18px;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+  }
+  .toolbar input[type="search"]:focus { border-color: var(--accent); }
+  .toolbar select {
+    background: var(--card);
+    border: 1px solid #2e2e36;
+    border-radius: 999px;
+    padding: 9px 14px;
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+    max-width: 240px;
+  }
+  .toolbar .info {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  /* ── 內容 ── */
+  .content { padding: 10px clamp(12px, 3vw, 36px) 60px; }
+
+  .year-divider {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 46px 0 8px;
+  }
+  .year-divider .y {
+    font-size: clamp(30px, 4.5vw, 44px);
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: .06em;
+    line-height: 1;
+  }
+  .year-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(212,168,67,.5), transparent);
+  }
+
+  section.film { margin: 26px 0 6px; }
+  .film-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .film-head h2 {
+    font-size: clamp(18px, 2.6vw, 24px);
+    font-weight: 700;
+    letter-spacing: .05em;
+  }
+  .film-head .n { color: var(--muted); font-size: 13px; }
+  .film-head .est { color: #6f6b63; font-size: 12px; }
+
+  .masonry {
+    columns: 5 230px;
+    column-gap: 14px;
+  }
+  .item {
+    break-inside: avoid;
+    margin-bottom: 14px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--card);
+    cursor: zoom-in;
+    position: relative;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,.55);
+  }
+  .item img { width: 100%; display: block; background: var(--bg2); }
+  .item .label {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 26px 12px 10px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: #fff;
+    background: linear-gradient(transparent, rgba(0,0,0,.82));
+    opacity: 0;
+    transition: opacity .25s ease;
+    pointer-events: none;
+  }
+  .item:hover .label { opacity: 1; }
+
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 80px 20px;
+    font-size: 15px;
+    display: none;
+  }
+
+  /* ── 燈箱 ── */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(8,8,10,.96);
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: min(94vw, 1400px);
+    max-height: 86vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 20px 80px rgba(0,0,0,.8);
+  }
+  .lightbox .caption {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: var(--text);
+    font-size: 14px;
+    max-width: 90vw;
+  }
+  .lightbox .caption .film-name { color: var(--accent); font-size: 12px; }
+  .lb-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,.07);
+    border: none;
+    color: var(--text);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    transition: background .2s;
+    user-select: none;
+  }
+  .lb-btn:hover { background: rgba(212,168,67,.3); }
+  .lb-prev { left: 16px; }
+  .lb-next { right: 16px; }
+  .lb-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: rgba(255,255,255,.07);
+    border: none;
+    color: var(--text);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .lb-close:hover { background: rgba(212,168,67,.3); }
+  .lb-counter {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: .05em;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 30px 20px 50px;
+    border-top: 1px solid #1f1f26;
+    letter-spacing: .08em;
+  }
+
+  @media (max-width: 600px) {
+    .masonry { columns: 2 140px; column-gap: 10px; }
+    .item { margin-bottom: 10px; }
+    .lb-btn { width: 40px; height: 40px; font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>陳正源 <span>·</span> 海報作品集</h1>
+  <p class="sub">電影 × 戲劇 視覺設計</p>
+  <span class="count" id="totalCount"></span>
+  <div class="marquee" id="marquee">
+    <div class="track" id="marqueeTrack"></div>
+    <div class="track rev" id="marqueeTrack2"></div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <input type="search" id="searchBox" placeholder="搜尋片名…">
+  <select id="filmSelect"><option value="">全部作品（依年份）</option></select>
+  <span class="info" id="shownInfo"></span>
+</div>
+
+<div class="content" id="content"></div>
+<div class="empty" id="emptyMsg">沒有符合的作品</div>
+
+<div class="lightbox" id="lightbox">
+  <span class="lb-counter" id="lbCounter"></span>
+  <button class="lb-close" id="lbClose" title="關閉 (Esc)">✕</button>
+  <button class="lb-btn lb-prev" id="lbPrev" title="上一張 (←)">‹</button>
+  <img id="lbImg" alt="">
+  <button class="lb-btn lb-next" id="lbNext" title="下一張 (→)">›</button>
+  <div class="caption" id="lbCaption"></div>
+</div>
+
+<footer>© 陳正源 電影與戲劇海報作品集</footer>
+
+<script src="images.js"></script>
+<script>
+(function () {
+  const content = document.getElementById('content');
+  const searchBox = document.getElementById('searchBox');
+  const filmSelect = document.getElementById('filmSelect');
+  const shownInfo = document.getElementById('shownInfo');
+  const emptyMsg = document.getElementById('emptyMsg');
+
+  // 圖片依片名分組
+  const itemsByFilm = new Map();
+  for (const it of DATA.items) {
+    if (!itemsByFilm.has(it.g)) itemsByFilm.set(it.g, []);
+    itemsByFilm.get(it.g).push(it);
+  }
+
+  // 片單排序：年份新到舊，「其他」類放最後
+  const LAST = new Set(['其他設計作品', '近期作品精選']);
+  const films = DATA.films.slice().sort((a, b) => {
+    const la = LAST.has(a.n), lb = LAST.has(b.n);
+    if (la !== lb) return la ? 1 : -1;
+    if (b.y !== a.y) return b.y - a.y;
+    return a.n.localeCompare(b.n, 'zh-Hant');
+  });
+
+  document.getElementById('totalCount').textContent =
+    '共 ' + DATA.items.length + ' 件作品 · ' + films.length + ' 部影視作品';
+
+  // 下拉片單
+  for (const f of films) {
+    const opt = document.createElement('option');
+    opt.value = f.n;
+    opt.textContent = (f.y && !LAST.has(f.n) ? f.y + ' · ' : '') + f.n +
+                      '（' + itemsByFilm.get(f.n).length + '）';
+    filmSelect.appendChild(opt);
+  }
+
+  // ── 頂部海報輪播帶：兩條反向滾動，每部片挑一張直式海報 ──
+  (function buildMarquee() {
+    const picks = [];
+    for (const f of films) {
+      if (LAST.has(f.n)) continue;
+      const items = itemsByFilm.get(f.n);
+      const pick = items.find(it => it.h > it.w) || items[0];
+      picks.push({ film: f.n, it: pick });
+      if (picks.length >= 64) break;
+    }
+    // 單雙交錯分到兩條帶子
+    const rows = [
+      { el: document.getElementById('marqueeTrack'),  picks: picks.filter((_, i) => i % 2 === 0) },
+      { el: document.getElementById('marqueeTrack2'), picks: picks.filter((_, i) => i % 2 === 1) }
+    ];
+    for (const row of rows) {
+      // 複製兩份做無縫循環
+      for (let round = 0; round < 2; round++) {
+        for (const p of row.picks) {
+          const img = document.createElement('img');
+          img.src = 'thumbs/' + p.it.f;
+          img.alt = p.film;
+          img.title = p.film;
+          img.loading = round === 0 ? 'eager' : 'lazy';
+          img.addEventListener('click', () => {
+            filmSelect.value = p.film;
+            render();
+            document.querySelector('.toolbar').scrollIntoView({ behavior: 'smooth' });
+          });
+          row.el.appendChild(img);
+        }
+      }
+    }
+  })();
+
+  let flat = [];  // 目前顯示中的圖片（燈箱用）
+
+  function render() {
+    const q = searchBox.value.trim().toLowerCase();
+    const sel = filmSelect.value;
+    content.innerHTML = '';
+    flat = [];
+    let lastYear = null;
+    let shownFilms = 0;
+
+    for (const f of films) {
+      if (sel && f.n !== sel) continue;
+      if (q && !f.n.toLowerCase().includes(q)) continue;
+      const items = itemsByFilm.get(f.n);
+      shownFilms++;
+
+      // 年份分隔線
+      const isLast = LAST.has(f.n);
+      const yearKey = isLast ? '其他' : (f.y || '其他');
+      if (!sel && yearKey !== lastYear) {
+        lastYear = yearKey;
+        const div = document.createElement('div');
+        div.className = 'year-divider';
+        div.innerHTML = '<span class="y">' + yearKey + '</span>';
+        content.appendChild(div);
+      }
+
+      const sec = document.createElement('section');
+      sec.className = 'film';
+      const head = document.createElement('div');
+      head.className = 'film-head';
+      head.innerHTML = '<h2>' + f.n + '</h2><span class="n">' + items.length + ' 件</span>' +
+        (f.e && !isLast ? '<span class="est">年份推估</span>' : '');
+      sec.appendChild(head);
+
+      const grid = document.createElement('div');
+      grid.className = 'masonry';
+      for (const it of items) {
+        const idx = flat.length;
+        flat.push(it);
+        const div = document.createElement('div');
+        div.className = 'item';
+        const img = document.createElement('img');
+        img.loading = 'lazy';
+        img.src = 'thumbs/' + it.f;
+        img.alt = it.t;
+        img.width = it.w;
+        img.height = it.h;
+        const label = document.createElement('div');
+        label.className = 'label';
+        label.textContent = it.t;
+        div.appendChild(img);
+        div.appendChild(label);
+        div.addEventListener('click', () => openLightbox(idx));
+        grid.appendChild(div);
+      }
+      sec.appendChild(grid);
+      content.appendChild(sec);
+    }
+
+    shownInfo.textContent = flat.length + ' / ' + DATA.items.length;
+    emptyMsg.style.display = shownFilms ? 'none' : 'block';
+  }
+
+  searchBox.addEventListener('input', render);
+  filmSelect.addEventListener('change', () => {
+    render();
+    window.scrollTo({ top: 0 });
+  });
+
+  // ── 燈箱 ──
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCaption = document.getElementById('lbCaption');
+  const lbCounter = document.getElementById('lbCounter');
+  let current = -1;
+
+  function openLightbox(idx) {
+    current = idx;
+    updateLightbox();
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function updateLightbox() {
+    const m = flat[current];
+    lbImg.src = 'full/' + m.f;
+    lbImg.alt = m.t;
+    lbCaption.innerHTML = '<div class="film-name">' + m.g + '</div>' + m.t;
+    lbCounter.textContent = (current + 1) + ' / ' + flat.length;
+    if (current + 1 < flat.length) (new Image()).src = 'full/' + flat[current + 1].f;
+    if (current > 0) (new Image()).src = 'full/' + flat[current - 1].f;
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lbImg.src = '';
+    document.body.style.overflow = '';
+  }
+  function step(d) {
+    current = (current + d + flat.length) % flat.length;
+    updateLightbox();
+  }
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbPrev').addEventListener('click', e => { e.stopPropagation(); step(-1); });
+  document.getElementById('lbNext').addEventListener('click', e => { e.stopPropagation(); step(1); });
+  lightbox.addEventListener('click', e => { if (e.target === lightbox || e.target === lbImg) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+
+  let touchX = null;
+  lightbox.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+  lightbox.addEventListener('touchend', e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 50) step(dx > 0 ? -1 : 1);
+    touchX = null;
+  }, { passive: true });
+
+  render();
+})();
+</script>
+</body>
+</html>
