@@ -140,9 +140,11 @@
     letter-spacing: .14em;
   }
   header h1 .en {
-    font-size: .52em;
-    letter-spacing: .12em;
-    vertical-align: .06em;
+    display: block;
+    font-size: .38em;
+    letter-spacing: .3em;
+    margin-top: 12px;
+    font-weight: 400;
   }
   header p.sub {
     margin-top: 16px;
@@ -428,7 +430,7 @@
 
   @media (max-width: 600px) {
     header { padding: 40px 14px 24px; }
-    header h1 { font-size: 23px; letter-spacing: .06em; white-space: nowrap; }
+    header h1 { font-size: 27px; letter-spacing: .08em; white-space: nowrap; }
     header p.sub { letter-spacing: .3em; text-indent: .3em; font-size: 12px; }
     header .count { font-size: 12px; padding: 6px 16px; }
     .deco-line { max-width: 78%; }
@@ -457,7 +459,7 @@
 
 <header>
   <canvas id="dustCanvas"></canvas>
-  <h1 class="gold-text">陳正源 <span class="en">STONE CHEN</span> · 海報作品集</h1>
+  <h1 class="gold-text">陳正源 · 海報作品集<span class="en">STONE CHEN · Poster Portfolio</span></h1>
   <div class="deco-line"><span class="diamond"></span></div>
   <p class="sub">電影 × 戲劇 視覺設計</p>
   <span class="count" id="totalCount"></span>
