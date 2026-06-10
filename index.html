@@ -472,7 +472,7 @@
 
 <footer>© 陳正源 電影與戲劇海報作品集</footer>
 
-<script src="images.js?v=4"></script>
+<script src="images.js?v=5"></script>
 <script>
 (function () {
   const content = document.getElementById('content');
@@ -545,6 +545,29 @@
       });
     }
 
+    // 波浪金線：幾條起伏流動的細金線
+    const waves = [
+      { yp: .30, amp: 14, len: .0052, speed: .50, alpha: .14, lw: 1.1, phase: 0 },
+      { yp: .46, amp: 22, len: .0036, speed: .32, alpha: .10, lw: 1.4, phase: 2.1 },
+      { yp: .62, amp: 17, len: .0046, speed: .42, alpha: .12, lw: 1.0, phase: 4.2 },
+      { yp: .80, amp: 26, len: .0030, speed: .26, alpha: .08, lw: 1.6, phase: 1.3 }
+    ];
+    function drawWaves(s) {
+      for (const w of waves) {
+        ctx.beginPath();
+        for (let x = 0; x <= W; x += 6) {
+          const y = H * w.yp
+            + Math.sin(x * w.len + s * w.speed + w.phase) * w.amp
+            + Math.sin(x * w.len * 2.7 - s * w.speed * .7 + w.phase) * w.amp * .35;
+          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        const breathe = .75 + .25 * Math.sin(s * .5 + w.phase);   // 緩慢呼吸的亮度
+        ctx.strokeStyle = 'rgba(210,191,142,' + (w.alpha * breathe).toFixed(3) + ')';
+        ctx.lineWidth = w.lw;
+        ctx.stroke();
+      }
+    }
+
     let last = 0;
     function draw(t) {
       const s = t / 1000;
@@ -553,6 +576,7 @@
       // 風：基礎風 + 緩慢起伏的陣風
       const wind = 14 + 17 * (0.5 + 0.5 * Math.sin(s * .22)) + 6 * Math.sin(s * .61 + 2);
       ctx.clearRect(0, 0, W, H);
+      drawWaves(s);
       for (const p of ps) {
         p.x += (wind * p.sp * dt) / W;          // 順風橫飄
         p.y += p.drift * dt;
