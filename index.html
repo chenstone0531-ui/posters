@@ -545,7 +545,7 @@
     <div class="t1 gold-text">陳正源 · 海報作品集</div>
     <div class="t2">STONE CHEN · Poster Portfolio</div>
   </div>
-  <div class="intro-hint" id="introHint">點擊畫面開啟音樂 ♪</div>
+  <div class="intro-hint" id="introHint">若沒有聽到音樂，請點一下畫面 ♪</div>
   <button class="intro-skip" id="introSkip">跳過 ›</button>
 </div>
 
@@ -638,7 +638,7 @@
       const j = Math.floor(Math.random() * (i + 1));
       [cand[i], cand[j]] = [cand[j], cand[i]];
     }
-    const slides = cand.slice(0, 8).map(it => {
+    const slides = cand.slice(0, 10).map(it => {
       const d = document.createElement('div');
       d.className = 'intro-slide';
       const img = document.createElement('img');
@@ -655,7 +655,8 @@
       try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return; }
       master = ac.createGain();
       master.gain.setValueAtTime(.0001, ac.currentTime);
-      master.gain.exponentialRampToValueAtTime(.42, ac.currentTime + 2);
+      master.gain.exponentialRampToValueAtTime(.5, ac.currentTime + 2);
+      master.gain.linearRampToValueAtTime(.62, ac.currentTime + 14);
       lp = ac.createBiquadFilter();
       lp.type = 'lowpass';
       lp.frequency.value = 2400;
@@ -672,23 +673,50 @@
         o.start(t); o.stop(t + dur + .1);
       }
       // Am → F → C → G，溫暖的電影感琶音
+      // 磅礴的電影感：定音鼓＋深低音＋弦樂長音＋寬廣琶音（C - G - Am - F）
       const chords = [
-        [220, 261.63, 329.63, 440],
-        [174.61, 220, 261.63, 349.23],
-        [130.81, 196, 261.63, 329.63],
-        [196, 246.94, 293.66, 392]
+        [130.81, 196.00, 261.63, 329.63, 392.00],
+        [98.00, 146.83, 196.00, 246.94, 293.66],
+        [110.00, 164.81, 220.00, 261.63, 329.63],
+        [87.31, 130.81, 174.61, 220.00, 261.63]
       ];
       let bar = 0, nextT = ac.currentTime + .15;
       ac._iv = setInterval(() => {
         if (!ac) return;
         while (nextT < ac.currentTime + 1.3) {
           const ch = chords[bar % 4];
-          note(ch[0] / 2, nextT, 3.8, .05, 'triangle');     // 低音 pad
-          note(ch[2] / 2, nextT, 3.8, .04, 'triangle');
-          for (let i = 0; i < 8; i++) {                       // 琶音
-            const f = ch[i % 4] * (i >= 4 ? 2 : 1);
-            note(f, nextT + i * .44, 1.5, .1);
-            note(f * 2, nextT + i * .44, .7, .02);
+          // 定音鼓：每小節開頭低沉一擊
+          (function (t) {
+            const o = ac.createOscillator(), g = ac.createGain();
+            o.type = 'sine';
+            o.frequency.setValueAtTime(ch[0] * .75, t);
+            o.frequency.exponentialRampToValueAtTime(ch[0] * .25, t + .2);
+            g.gain.setValueAtTime(.34, t);
+            g.gain.exponentialRampToValueAtTime(.0001, t + 1.3);
+            o.connect(g); g.connect(lp);
+            o.start(t); o.stop(t + 1.4);
+          })(nextT);
+          // 深低音
+          note(ch[0] / 2, nextT, 3.6, .15, 'sine');
+          note(ch[0], nextT, 3.6, .06, 'triangle');
+          // 弦樂感長音：雙鋸齒波微失諧、緩慢起音
+          for (const f of [ch[1], ch[2], ch[3]]) {
+            const o1 = ac.createOscillator(), o2 = ac.createOscillator(), g = ac.createGain();
+            o1.type = o2.type = 'sawtooth';
+            o1.frequency.value = f;
+            o2.frequency.value = f * 1.004;
+            g.gain.setValueAtTime(.0001, nextT);
+            g.gain.linearRampToValueAtTime(.034, nextT + 1.4);
+            g.gain.exponentialRampToValueAtTime(.0001, nextT + 3.6);
+            o1.connect(g); o2.connect(g); g.connect(lp);
+            o1.start(nextT); o2.start(nextT);
+            o1.stop(nextT + 3.7); o2.stop(nextT + 3.7);
+          }
+          // 寬廣琶音
+          for (let i = 0; i < 8; i++) {
+            const f = ch[1 + (i % 4)] * (i >= 4 ? 2 : 1);
+            note(f, nextT + i * .44, 1.6, .09);
+            note(f * 2, nextT + i * .44, .8, .022);
           }
           nextT += 3.52; bar++;
         }
@@ -717,10 +745,10 @@
       idx++;
       if (idx < slides.length) {
         slides[idx].classList.add('show');
-        timer = setTimeout(next, 1500);
+        timer = setTimeout(next, 1600);
       } else {
         finalEl.classList.add('show');
-        timer = setTimeout(endIntro, 2600);
+        timer = setTimeout(endIntro, 3000);
       }
     }
     function endIntro() {
@@ -734,6 +762,20 @@
     }
     document.getElementById('introSkip').addEventListener('pointerdown', e => e.stopPropagation());
     document.getElementById('introSkip').addEventListener('click', endIntro);
+
+    // 進站直接嘗試播放音樂；若被瀏覽器擋下，第一次任何互動立即開聲
+    startMusic();
+    if (!ac || ac.state === 'suspended') {
+      const unlock = () => {
+        startMusic();
+        if (ac && ac.state === 'suspended') ac.resume();
+        hintEl.style.display = 'none';
+        ['pointerdown', 'touchstart', 'keydown'].forEach(ev => window.removeEventListener(ev, unlock));
+      };
+      ['pointerdown', 'touchstart', 'keydown'].forEach(ev => window.addEventListener(ev, unlock));
+    } else {
+      hintEl.style.display = 'none';
+    }
 
     // 第一張載入完成就開播（最多等 1.5 秒）
     const first = slides[0] && slides[0].querySelector('img');
