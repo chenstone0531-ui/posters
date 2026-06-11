@@ -258,7 +258,7 @@ FOLDER_PREFER_FILENAME = {"粽邪1.2海報", "痞子英雄1.2", "近期的影視
 OTHER = "其他設計作品"
 
 # 不放上網站的作品（其他設計作品 = 認不出片名的雜項，全部不放）
-EXCLUDE_FILMS = {"鬼才之道", "小孩才做選擇", "心之谷（重映）", OTHER}
+EXCLUDE_FILMS = {"鬼才之道", "小孩才做選擇", "心之谷（重映）", "天使之卵（數位修復版）", OTHER}
 
 def match_patterns(name):
     for key, film, year in PATTERNS:
