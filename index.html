@@ -564,7 +564,7 @@
 </header>
 
 <div class="toolbar">
-  <input type="search" id="searchBox" placeholder="搜尋片名…">
+  <input type="search" id="searchBox" placeholder="搜尋片名或演員…">
   <select id="filmSelect"><option value="">全部作品（依年份）</option></select>
   <span class="info" id="shownInfo"></span>
   <button class="fs-btn" id="fsBtn" title="全螢幕切換">⛶</button>
@@ -588,6 +588,7 @@
 <footer>© 陳正源 STONE CHEN 電影與戲劇海報作品集</footer>
 
 <script src="images.js?v=13"></script>
+<script src="cast.js"></script>
 <script>
 (function () {
   const content = document.getElementById('content');
@@ -892,7 +893,8 @@
 
     for (const f of films) {
       if (sel && f.n !== sel) continue;
-      if (q && !f.n.toLowerCase().includes(q)) continue;
+      const castStr = (typeof CAST !== 'undefined' && CAST[f.n]) ? CAST[f.n].toLowerCase() : '';
+      if (q && !f.n.toLowerCase().includes(q) && !castStr.includes(q)) continue;
       const items = itemsByFilm.get(f.n);
       shownFilms++;
 
