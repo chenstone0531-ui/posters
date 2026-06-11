@@ -177,19 +177,13 @@
     display: flex;
     gap: 14px;
     width: max-content;
-    animation: marquee-scroll 55s linear infinite;
     will-change: transform;
-    padding: 14px 0 10px;
+    padding: 18px 0 52px;     /* 下方留弧線下凹的空間 */
   }
   .marquee .track.rev {
-    animation: marquee-scroll-rev 70s linear infinite;
-    padding: 4px 0 18px;
+    padding: 44px 0 22px;     /* 上方留弧線上拱的空間 */
   }
-  @keyframes marquee-scroll-rev {
-    from { transform: translateX(-50%); }
-    to   { transform: translateX(0); }
-  }
-  .marquee:hover .track { animation-play-state: paused; }
+  .mq-item { flex: none; will-change: transform; }
   .marquee img {
     height: clamp(120px, 18vw, 185px);
     width: auto;
@@ -723,7 +717,7 @@
     requestAnimationFrame(draw);
   })();
 
-  // ── 頂部海報輪播帶：兩條反向滾動，每部片挑一張直式海報 ──
+  // ── 頂部海報輪播帶：兩條弧形影帶（上凹下拱），海報沿弧線流動 ──
   (function buildMarquee() {
     const picks = [];
     for (const f of films) {
@@ -733,31 +727,75 @@
       picks.push({ film: f.n, it: pick });
       if (picks.length >= 64) break;
     }
-    // 單雙交錯分到兩條帶子
+    const zone = document.getElementById('marquee');
     const rows = [
-      { el: document.getElementById('marqueeTrack'),  picks: picks.filter((_, i) => i % 2 === 0) },
-      { el: document.getElementById('marqueeTrack2'), picks: picks.filter((_, i) => i % 2 === 1) }
+      { el: document.getElementById('marqueeTrack'),  picks: picks.filter((_, i) => i % 2 === 0), dir: -1, speed: 42, curve: 30 },
+      { el: document.getElementById('marqueeTrack2'), picks: picks.filter((_, i) => i % 2 === 1), dir: 1,  speed: 34, curve: -30 }
     ];
     for (const row of rows) {
-      // 複製兩份做無縫循環
       for (let round = 0; round < 2; round++) {
         for (const p of row.picks) {
+          const wrap = document.createElement('div');
+          wrap.className = 'mq-item';
           const img = document.createElement('img');
           img.src = 'thumbs/' + p.it.f;
           img.alt = p.film;
           img.title = p.film;
           img.loading = round === 0 ? 'eager' : 'lazy';
           img.addEventListener('click', () => {
-            // 篩選到該片並直接放大這張海報
             filmSelect.value = p.film;
             render();
             const idx = flat.indexOf(p.it);
             openLightbox(idx >= 0 ? idx : 0);
           });
-          row.el.appendChild(img);
+          wrap.appendChild(img);
+          row.el.appendChild(wrap);
         }
       }
+      row.off = 0;
+      row.items = [];
+      row.half = 0;
     }
+    function measure(row) {
+      row.items = [...row.el.children].map(el => ({ el, left: el.offsetLeft, w: el.offsetWidth }));
+      row.half = row.el.scrollWidth / 2;
+    }
+    rows.forEach(measure);
+    window.addEventListener('resize', () => rows.forEach(measure));
+    setTimeout(() => rows.forEach(measure), 1500);   // 圖片載入後寬度會變，再量
+    setTimeout(() => rows.forEach(measure), 4500);
+
+    // 滑鼠移上去緩緩停下
+    let speedF = 1, targetF = 1;
+    zone.addEventListener('mouseenter', () => { targetF = 0; });
+    zone.addEventListener('mouseleave', () => { targetF = 1; });
+
+    let lastT = 0;
+    function tick(t) {
+      const dt = Math.min((t - lastT) / 1000, .05) || .016;
+      lastT = t;
+      speedF += (targetF - speedF) * Math.min(1, dt * 5);
+      const W = zone.clientWidth || 1;
+      for (const row of rows) {
+        if (!row.half) measure(row);
+        row.off += row.dir * row.speed * speedF * dt;
+        if (row.half > 0) {
+          row.off = row.off % row.half;
+          if (row.off > 0) row.off -= row.half;
+        }
+        row.el.style.transform = 'translateX(' + row.off.toFixed(2) + 'px)';
+        // 沿弧線：中間最彎、兩端回平，並順著弧度微微旋轉
+        for (const it of row.items) {
+          const cx = it.left + it.w / 2 + row.off;
+          const tt = Math.max(-.65, Math.min(.65, cx / W - .5));
+          const y = row.curve * (1 - 4 * tt * tt);
+          const ang = row.curve * (-8 * tt) / W;
+          it.el.style.transform = 'translateY(' + y.toFixed(2) + 'px) rotate(' + ang.toFixed(4) + 'rad)';
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
   })();
 
   let flat = [];  // 目前顯示中的圖片（燈箱用）
