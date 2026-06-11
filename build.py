@@ -257,6 +257,13 @@ FOLDER_PREFER_FILENAME = {"粽邪1.2海報", "痞子英雄1.2", "近期的影視
 
 OTHER = "其他設計作品"
 
+# 視覺重複、不放上網站的單張檔案（exclude_files.json）
+EXCLUDE_FILES = set()
+_ef = os.path.join(os.path.dirname(os.path.abspath(__file__)), "exclude_files.json")
+if os.path.exists(_ef):
+    with open(_ef, encoding="utf-8") as _fh:
+        EXCLUDE_FILES = set(json.load(_fh))
+
 # 不放上網站的作品（其他設計作品 = 認不出片名的雜項，全部不放）
 EXCLUDE_FILMS = {"鬼才之道", "小孩才做選擇", "心之谷（重映）", "天使之卵（數位修復版）", OTHER}
 
@@ -327,7 +334,7 @@ group_years = {}     # 片名 -> 確定年份
 group_guess = {}     # 片名 -> 檔案日期推估
 for i, (src, folder, title) in enumerate(entries, 1):
     film, year = classify(os.path.basename(src), folder)
-    if film in EXCLUDE_FILMS:
+    if film in EXCLUDE_FILMS or os.path.basename(src) in EXCLUDE_FILES:
         continue
     rel = os.path.relpath(src, ROOT)
     name = NAMES.get(rel)
