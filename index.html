@@ -411,6 +411,20 @@
     cursor: pointer;
   }
   .lb-close:hover { background: rgba(169,142,93,.3); }
+  .lb-play {
+    position: absolute;
+    top: 14px;
+    right: 70px;
+    background: rgba(255,255,255,.07);
+    border: none;
+    color: var(--text);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .lb-play:hover { background: rgba(181,153,100,.3); }
   .lb-counter {
     position: absolute;
     top: 24px;
@@ -482,6 +496,7 @@
 <div class="lightbox" id="lightbox">
   <span class="lb-counter" id="lbCounter"></span>
   <button class="lb-close" id="lbClose" title="關閉 (Esc)">✕</button>
+  <button class="lb-play" id="lbPlay" title="自動播放/暫停">⏸</button>
   <button class="lb-btn lb-prev" id="lbPrev" title="上一張 (←)">‹</button>
   <img id="lbImg" alt="">
   <button class="lb-btn lb-next" id="lbNext" title="下一張 (→)">›</button>
@@ -815,11 +830,32 @@
   const lbCounter = document.getElementById('lbCounter');
   let current = -1;
 
+  // 自動播放：每 3 秒換下一張
+  let autoTimer = null, autoPlaying = true;
+  const lbPlay = document.getElementById('lbPlay');
+  function startAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => step(1), 3000);
+    autoPlaying = true;
+    lbPlay.textContent = '⏸';
+  }
+  function stopAuto() {
+    clearInterval(autoTimer);
+    autoTimer = null;
+    autoPlaying = false;
+    lbPlay.textContent = '▶';
+  }
+  lbPlay.addEventListener('click', e => {
+    e.stopPropagation();
+    autoPlaying ? stopAuto() : startAuto();
+  });
+
   function openLightbox(idx) {
     current = idx;
     updateLightbox();
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
+    startAuto();
   }
   function updateLightbox() {
     const m = flat[current];
@@ -831,6 +867,8 @@
     if (current > 0) (new Image()).src = 'full/' + flat[current - 1].f;
   }
   function closeLightbox() {
+    clearInterval(autoTimer);
+    autoTimer = null;
     lightbox.classList.remove('open');
     lbImg.src = '';
     document.body.style.overflow = '';
@@ -841,14 +879,15 @@
   }
 
   document.getElementById('lbClose').addEventListener('click', closeLightbox);
-  document.getElementById('lbPrev').addEventListener('click', e => { e.stopPropagation(); step(-1); });
-  document.getElementById('lbNext').addEventListener('click', e => { e.stopPropagation(); step(1); });
+  document.getElementById('lbPrev').addEventListener('click', e => { e.stopPropagation(); step(-1); if (autoPlaying) startAuto(); });
+  document.getElementById('lbNext').addEventListener('click', e => { e.stopPropagation(); step(1); if (autoPlaying) startAuto(); });
   lightbox.addEventListener('click', e => { if (e.target === lightbox || e.target === lbImg) closeLightbox(); });
   document.addEventListener('keydown', e => {
     if (!lightbox.classList.contains('open')) return;
     if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') step(-1);
-    if (e.key === 'ArrowRight') step(1);
+    if (e.key === 'ArrowLeft') { step(-1); if (autoPlaying) startAuto(); }
+    if (e.key === 'ArrowRight') { step(1); if (autoPlaying) startAuto(); }
+    if (e.key === ' ') { e.preventDefault(); autoPlaying ? stopAuto() : startAuto(); }
   });
 
   let touchX = null;
