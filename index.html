@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0a0c">
 <title>陳正源 STONE CHEN — 電影與戲劇海報作品集</title>
 <style>
   :root {
@@ -257,6 +261,18 @@
     outline: none;
     max-width: 240px;
   }
+  .fs-btn {
+    background: var(--card);
+    border: 1px solid #2e2e36;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    color: var(--gold-light);
+    font-size: 18px;
+    cursor: pointer;
+    flex: none;
+  }
+  .fs-btn:hover { border-color: var(--accent); background: rgba(181,153,100,.12); }
   .toolbar .info {
     margin-left: auto;
     color: var(--muted);
@@ -475,7 +491,19 @@
     .toolbar { padding: 10px 12px; gap: 8px; }
     .toolbar input[type="search"] { flex: 1 1 150px; max-width: none; padding: 12px 18px; font-size: 16px; }
     .toolbar select { flex: 0 1 auto; max-width: 46%; padding: 8px 10px; font-size: 13px; }
-    .toolbar .info { display: none; }
+    .fs-btn {
+    background: var(--card);
+    border: 1px solid #2e2e36;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    color: var(--gold-light);
+    font-size: 18px;
+    cursor: pointer;
+    flex: none;
+  }
+  .fs-btn:hover { border-color: var(--accent); background: rgba(181,153,100,.12); }
+  .toolbar .info { display: none; }
     .year-divider { margin: 36px 0 6px; gap: 12px; }
     .year-divider .y { font-size: 28px; }
     .film-head { padding-left: 10px; gap: 8px; }
@@ -509,6 +537,7 @@
   <input type="search" id="searchBox" placeholder="搜尋片名…">
   <select id="filmSelect"><option value="">全部作品（依年份）</option></select>
   <span class="info" id="shownInfo"></span>
+  <button class="fs-btn" id="fsBtn" title="全螢幕切換">⛶</button>
 </div>
 
 <div class="content" id="content"></div>
@@ -967,6 +996,28 @@
   }, { passive: true });
 
   render();
+
+  // ── 全螢幕：第一次點擊/觸碰自動進入；⛶ 按鈕可切換 ──
+  const fsBtn = document.getElementById('fsBtn');
+  function enterFS() {
+    const el = document.documentElement;
+    const fn = el.requestFullscreen || el.webkitRequestFullscreen;
+    if (fn) try { fn.call(el); } catch (e) {}
+  }
+  function exitFS() {
+    const fn = document.exitFullscreen || document.webkitExitFullscreen;
+    if (fn) try { fn.call(document); } catch (e) {}
+  }
+  function isFS() {
+    return document.fullscreenElement || document.webkitFullscreenElement;
+  }
+  fsBtn.addEventListener('click', () => { isFS() ? exitFS() : enterFS(); });
+  const autoFS = e => {
+    if (e.target === fsBtn) return;
+    if (!isFS()) enterFS();
+    ['pointerdown', 'keydown'].forEach(ev => window.removeEventListener(ev, autoFS));
+  };
+  ['pointerdown', 'keydown'].forEach(ev => window.addEventListener(ev, autoFS));
 
   // 進站自動開始海報播放（✕ 可關閉回到圖牆）
   setTimeout(() => {
