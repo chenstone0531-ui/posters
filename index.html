@@ -175,15 +175,33 @@
   }
   .marquee .track {
     display: flex;
-    gap: 14px;
+    gap: 5px;
     width: max-content;
     will-change: transform;
-    padding: 18px 0 52px;     /* 下方留弧線下凹的空間 */
+    padding: 20px 0 84px;     /* 下方留弧線下凹的空間 */
   }
   .marquee .track.rev {
-    padding: 44px 0 22px;     /* 上方留弧線上拱的空間 */
+    padding: 72px 0 26px;     /* 上方留弧線上拱的空間 */
   }
-  .mq-item { flex: none; will-change: transform; }
+  /* 膠卷格：上下兩排齒孔 */
+  .mq-item {
+    flex: none;
+    will-change: transform;
+    background: #131310;
+    padding: 3px 7px;
+    border-radius: 2px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  }
+  .mq-item::before, .mq-item::after {
+    content: "";
+    display: block;
+    height: 11px;
+    background-image: radial-gradient(ellipse 4.2px 3.4px at 7px 5.5px, rgba(233,221,187,.85) 0 68%, transparent 75%);
+    background-size: 15px 11px;
+    background-repeat: repeat-x;
+  }
+  .mq-item::before { margin-bottom: 4px; }
+  .mq-item::after { margin-top: 4px; }
   .marquee img {
     height: clamp(120px, 18vw, 185px);
     width: auto;
@@ -194,7 +212,7 @@
     transition: transform .3s ease, box-shadow .3s ease;
   }
   .marquee img:hover {
-    transform: translateY(-8px) scale(1.05);
+    transform: scale(1.06);
     box-shadow: 0 16px 36px rgba(0,0,0,.7), 0 0 0 2px rgba(169,142,93,.55);
   }
   @keyframes marquee-scroll {
@@ -451,9 +469,9 @@
     header .count { font-size: 12px; padding: 6px 16px; }
     .deco-line { max-width: 78%; }
     .marquee { margin-top: 24px; }
-    .marquee img { height: 108px; border-radius: 6px; }
-    .marquee .track { gap: 8px; padding: 10px 0 6px; }
-    .marquee .track.rev { padding: 2px 0 12px; }
+    .marquee img { height: 108px; border-radius: 3px; }
+    .marquee .track { gap: 4px; padding: 12px 0 46px; }
+    .marquee .track.rev { padding: 40px 0 14px; }
     .toolbar { padding: 10px 12px; gap: 8px; }
     .toolbar input[type="search"] { flex: 1 1 150px; max-width: none; padding: 12px 18px; font-size: 16px; }
     .toolbar select { flex: 0 1 auto; max-width: 46%; padding: 8px 10px; font-size: 13px; }
@@ -729,8 +747,8 @@
     }
     const zone = document.getElementById('marquee');
     const rows = [
-      { el: document.getElementById('marqueeTrack'),  picks: picks.filter((_, i) => i % 2 === 0), dir: -1, speed: 42, curve: 30 },
-      { el: document.getElementById('marqueeTrack2'), picks: picks.filter((_, i) => i % 2 === 1), dir: 1,  speed: 34, curve: -30 }
+      { el: document.getElementById('marqueeTrack'),  picks: picks.filter((_, i) => i % 2 === 0), dir: -1, speed: 42, curve: 60 },
+      { el: document.getElementById('marqueeTrack2'), picks: picks.filter((_, i) => i % 2 === 1), dir: 1,  speed: 34, curve: -60 }
     ];
     for (const row of rows) {
       for (let round = 0; round < 2; round++) {
@@ -785,11 +803,12 @@
         }
         row.el.style.transform = 'translateX(' + row.off.toFixed(2) + 'px)';
         // 沿弧線：中間最彎、兩端回平，並順著弧度微微旋轉
+        const cuF = Math.min(1, Math.max(.45, W / 1000));   // 小螢幕弧度縮小
         for (const it of row.items) {
           const cx = it.left + it.w / 2 + row.off;
           const tt = Math.max(-.65, Math.min(.65, cx / W - .5));
-          const y = row.curve * (1 - 4 * tt * tt);
-          const ang = row.curve * (-8 * tt) / W;
+          const y = row.curve * cuF * (1 - 4 * tt * tt);
+          const ang = row.curve * cuF * (-8 * tt) / W;
           it.el.style.transform = 'translateY(' + y.toFixed(2) + 'px) rotate(' + ang.toFixed(4) + 'rad)';
         }
       }
