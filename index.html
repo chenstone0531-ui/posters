@@ -821,6 +821,7 @@
   filmSelect.addEventListener('change', () => {
     render();
     window.scrollTo({ top: 0 });
+    if (filmSelect.value && flat.length) openLightbox(0);   // 選片直接開始播放
   });
 
   // ── 燈箱 ──
@@ -900,6 +901,11 @@
   }, { passive: true });
 
   render();
+
+  // 進站自動開始海報播放（✕ 可關閉回到圖牆）
+  setTimeout(() => {
+    if (flat.length) openLightbox(0);
+  }, 900);
 })();
 </script>
 </body>
