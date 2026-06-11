@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:title" content="鐵拳教育｜Netflix 韓劇推薦 👊">
+<meta property="og:description" content="以暴制暴・專治失控校園。上線三天橫掃全球 27 國冠軍、IMDb 8.7，一集一案爽到底！點開看動態推薦卡。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chenstone0531-ui.github.io/posters/fist.html">
+<title>鐵拳教育｜Netflix 韓劇推薦 👊</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #000;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    overflow: hidden;
+  }
+  #stage {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, #2a2010 0%, transparent 60%),
+      radial-gradient(ellipse 70% 40% at 50% 112%, #220a0a 0%, transparent 60%),
+      #0a0a0c;
+    overflow: hidden;
+    flex-shrink: 0;
+    transform-origin: center center;
+  }
+  .dust {
+    position: absolute;
+    border-radius: 50%;
+    background: #d4af37;
+    opacity: 0;
+    animation: float 7s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%   { transform: translateY(30px); opacity: 0; }
+    30%  { opacity: .55; }
+    70%  { opacity: .25; }
+    100% { transform: translateY(-160px); opacity: 0; }
+  }
+  #burst {
+    position: absolute;
+    top: 130px; left: 50%;
+    width: 700px; height: 700px;
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+  .play #burst { animation: burstIn .5s .75s ease-out forwards; }
+  @keyframes burstIn {
+    0%   { opacity: 0; transform: translateX(-50%) scale(.4); }
+    40%  { opacity: .9; }
+    100% { opacity: .14; transform: translateX(-50%) scale(1); }
+  }
+  #head { position: absolute; top: 58px; width: 100%; text-align: center; }
+  #nflx {
+    display: inline-block;
+    background: #e50914;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    padding: 8px 26px;
+    border-radius: 6px;
+    opacity: 0;
+  }
+  .play #nflx { animation: fadeDown .5s .15s ease-out forwards; }
+  #eng {
+    margin-top: 18px;
+    letter-spacing: 10px;
+    font-size: 24px;
+    color: #8a7430;
+    opacity: 0;
+  }
+  .play #eng { animation: fadeDown .6s .35s ease-out forwards; }
+  #title {
+    font-size: 148px;
+    font-weight: 900;
+    line-height: 1.08;
+    margin-top: 8px;
+    background: linear-gradient(160deg, #f5e08c 10%, #d4af37 40%, #8a6914 70%, #f0d878 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 8px 28px rgba(212,175,55,.35));
+    opacity: 0;
+  }
+  .play #title { animation: punch .55s .7s cubic-bezier(.2,1.6,.35,1) forwards, shine 4s 1.6s linear infinite; }
+  @keyframes punch {
+    0%   { opacity: 0; transform: scale(3.6); }
+    60%  { opacity: 1; transform: scale(.92); }
+    75%  { transform: scale(1.06) rotate(-1deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+  }
+  @keyframes shine { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+  #sub {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 10px 32px;
+    border: 1px solid #d4af37;
+    color: #f0d878;
+    font-size: 29px;
+    letter-spacing: 8px;
+    opacity: 0;
+  }
+  .play #sub { animation: fadeDown .6s 1.15s ease-out forwards; }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-22px); } to { opacity: 1; transform: translateY(0); } }
+  #stats {
+    position: absolute;
+    top: 462px; left: 80px; right: 80px;
+    display: flex;
+    gap: 18px;
+  }
+  .stat {
+    flex: 1;
+    text-align: center;
+    padding: 22px 8px 18px;
+    background: rgba(212,175,55,.07);
+    border: 1px solid rgba(212,175,55,.35);
+    opacity: 0;
+  }
+  .play .stat { animation: popUp .5s ease-out forwards; }
+  .play .stat:nth-child(1) { animation-delay: 1.5s; }
+  .play .stat:nth-child(2) { animation-delay: 1.65s; }
+  .play .stat:nth-child(3) { animation-delay: 1.8s; }
+  @keyframes popUp {
+    0%   { opacity: 0; transform: translateY(46px) scale(.9); }
+    70%  { opacity: 1; transform: translateY(-6px) scale(1.02); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .stat .num { font-size: 58px; font-weight: 900; color: #f0d878; }
+  .stat .num small { font-size: 30px; font-weight: 700; }
+  .stat .lab { font-size: 23px; color: #bba868; margin-top: 6px; letter-spacing: 2px; }
+  #list { position: absolute; top: 668px; left: 80px; right: 80px; }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 15px 28px;
+    margin-bottom: 13px;
+    background: rgba(212,175,55,.06);
+    border: 1px solid rgba(212,175,55,.28);
+    border-left: 5px solid #d4af37;
+    opacity: 0;
+  }
+  .play .row { animation: slideIn .55s ease-out forwards; }
+  .play .row:nth-child(1) { animation-delay: 2.1s; }
+  .play .row:nth-child(2) { animation-delay: 2.35s; }
+  .play .row:nth-child(3) { animation-delay: 2.6s; }
+  .play .row:nth-child(4) { animation-delay: 2.85s; }
+  @keyframes slideIn {
+    0%   { opacity: 0; transform: translateX(-90px); }
+    70%  { opacity: 1; transform: translateX(10px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+  .rank {
+    font-size: 44px;
+    font-weight: 900;
+    color: #d4af37;
+    width: 60px;
+    text-align: center;
+    flex-shrink: 0;
+    font-style: italic;
+  }
+  .txt { flex: 1; font-size: 31px; color: #f6f1e0; font-weight: 500; }
+  .txt span { color: #bba868; }
+  #cast {
+    position: absolute;
+    top: 1136px;
+    width: 100%;
+    text-align: center;
+    font-size: 27px;
+    color: #9a8a52;
+    letter-spacing: 4px;
+    opacity: 0;
+  }
+  .play #cast { animation: fadeDown .6s 3.25s ease-out forwards; }
+  #cast b { color: #f0d878; font-weight: 700; }
+  #cta {
+    position: absolute;
+    bottom: 54px;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+  }
+  .play #cta { animation: fadeDown .7s 3.55s ease-out forwards; }
+  #cta .line { color: #f0d878; font-size: 35px; font-weight: 700; letter-spacing: 4px; }
+  #cta .small { color: #8a7430; font-size: 22px; margin-top: 10px; letter-spacing: 3px; }
+</style>
+</head>
+<body>
+<div id="stage" class="play">
+  <svg id="burst" viewBox="0 0 200 200">
+    <g stroke="#d4af37" stroke-width="1.4" opacity=".8">
+      <line x1="100" y1="100" x2="100" y2="6"  transform="rotate(0 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="14" transform="rotate(25 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="4"  transform="rotate(52 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="16" transform="rotate(78 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="8"  transform="rotate(105 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="13" transform="rotate(131 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="5"  transform="rotate(158 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="15" transform="rotate(184 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="7"  transform="rotate(211 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="12" transform="rotate(237 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="5"  transform="rotate(264 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="15" transform="rotate(290 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="9"  transform="rotate(317 100 100)"/>
+      <line x1="100" y1="100" x2="100" y2="13" transform="rotate(343 100 100)"/>
+    </g>
+    <circle cx="100" cy="100" r="72" fill="none" stroke="#d4af37" stroke-width=".6" opacity=".5"/>
+  </svg>
+
+  <div id="head">
+    <div id="nflx">NETFLIX 獨家影集</div>
+    <div id="eng">참교육 · TEACH YOU A LESSON</div>
+    <div id="title">鐵拳教育</div>
+    <div id="sub">以暴制暴・專治失控校園</div>
+  </div>
+
+  <div id="stats">
+    <div class="stat">
+      <div class="num">27<small> 國</small></div>
+      <div class="lab">Netflix 排行冠軍</div>
+    </div>
+    <div class="stat">
+      <div class="num">8.7</div>
+      <div class="lab">IMDb 高分好評</div>
+    </div>
+    <div class="stat">
+      <div class="num">10<small> 集</small></div>
+      <div class="lab">一集一案爽到底</div>
+    </div>
+  </div>
+
+  <div id="list">
+    <div class="row">
+      <div class="rank">01</div>
+      <div class="txt">特戰出身要員空降失控校園，<span>物理超渡惡霸</span></div>
+    </div>
+    <div class="row">
+      <div class="rank">02</div>
+      <div class="txt">當場解決、絕不拖戲，<span>專治低血壓的降壓爽劇</span></div>
+    </div>
+    <div class="row">
+      <div class="rank">03</div>
+      <div class="txt">《少年法庭》導演 × <span>Naver 人氣神作網漫改編</span></div>
+    </div>
+    <div class="row">
+      <div class="rank">04</div>
+      <div class="txt">金武烈瘋狂增肌練拳，<span>動作場面拳拳到肉</span></div>
+    </div>
+  </div>
+
+  <div id="cast"><b>金武烈</b>・<b>李星民</b>・<b>秦基周</b>・<b>P.O 表志勳</b>　主演</div>
+
+  <div id="cta">
+    <div class="line">看完了嗎？你給這部幾顆鐵拳？留言開戰 👇</div>
+    <div class="small">◆ 追蹤我，每週嚴選好劇不漏接 ◆</div>
+  </div>
+</div>
+
+<script>
+  const stage = document.getElementById('stage');
+
+  function fit() {
+    const s = Math.min(innerWidth / 1080, innerHeight / 1350) * 0.97;
+    stage.style.transform = 'scale(' + s + ')';
+  }
+  addEventListener('resize', fit);
+  fit();
+
+  for (let i = 0; i < 26; i++) {
+    const d = document.createElement('div');
+    d.className = 'dust';
+    const size = 2 + Math.random() * 5;
+    d.style.width = d.style.height = size + 'px';
+    d.style.left = Math.random() * 100 + '%';
+    d.style.top = 20 + Math.random() * 80 + '%';
+    d.style.animationDelay = Math.random() * 7 + 's';
+    d.style.animationDuration = 5 + Math.random() * 5 + 's';
+    stage.appendChild(d);
+  }
+
+  // 每 9 秒重播一次入場動畫，方便螢幕錄影做成影片貼文
+  setInterval(() => {
+    stage.classList.remove('play');
+    void stage.offsetWidth;
+    stage.classList.add('play');
+  }, 9000);
+</script>
+</body>
+</html>
