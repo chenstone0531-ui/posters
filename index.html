@@ -166,13 +166,17 @@
     letter-spacing: .18em;
   }
 
-  /* ── 海報輪播帶 ── */
+  /* ── 海報輪播帶：兩條斜向交錯的影帶 ── */
+  .marquee-zone { margin-top: 44px; }
   .marquee {
     overflow: hidden;
-    margin-top: 38px;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    width: 114%;
+    margin-left: -7%;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
   }
+  .marquee.tilt-l { transform: rotate(-2.6deg); }
+  .marquee.tilt-r { transform: rotate(2.6deg); margin-top: -14px; }
   .marquee .track {
     display: flex;
     gap: 14px;
@@ -191,7 +195,7 @@
   }
   .marquee:hover .track { animation-play-state: paused; }
   .marquee img {
-    height: clamp(120px, 18vw, 185px);
+    height: clamp(130px, 20vw, 205px);
     width: auto;
     border-radius: 8px;
     display: block;
@@ -456,7 +460,8 @@
     header p.sub { letter-spacing: .3em; text-indent: .3em; font-size: 12px; }
     header .count { font-size: 12px; padding: 6px 16px; }
     .deco-line { max-width: 78%; }
-    .marquee { margin-top: 24px; }
+    .marquee-zone { margin-top: 26px; }
+    .marquee.tilt-r { margin-top: -8px; }
     .marquee img { height: 108px; border-radius: 6px; }
     .marquee .track { gap: 8px; padding: 10px 0 6px; }
     .marquee .track.rev { padding: 2px 0 12px; }
@@ -485,9 +490,9 @@
   <div class="deco-line"><span class="diamond"></span></div>
   <p class="sub">電影 × 戲劇 視覺設計</p>
   <span class="count" id="totalCount"></span>
-  <div class="marquee" id="marquee">
-    <div class="track" id="marqueeTrack"></div>
-    <div class="track rev" id="marqueeTrack2"></div>
+  <div class="marquee-zone" id="marquee">
+    <div class="marquee tilt-l"><div class="track" id="marqueeTrack"></div></div>
+    <div class="marquee tilt-r"><div class="track rev" id="marqueeTrack2"></div></div>
   </div>
 </header>
 
