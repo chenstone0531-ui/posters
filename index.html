@@ -835,7 +835,7 @@
   const lbPlay = document.getElementById('lbPlay');
   function startAuto() {
     clearInterval(autoTimer);
-    autoTimer = setInterval(() => step(1), 3000);
+    autoTimer = setInterval(() => step(1), 1800);
     autoPlaying = true;
     lbPlay.textContent = '⏸';
   }
