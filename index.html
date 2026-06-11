@@ -178,10 +178,10 @@
     gap: 14px;
     width: max-content;
     will-change: transform;
-    padding: 18px 0 80px;     /* 下方留弧線下凹的空間 */
+    padding: 14px 0 5px;
   }
   .marquee .track.rev {
-    padding: 6px 0 76px;
+    padding: 5px 0 16px;
   }
   .mq-item { flex: none; will-change: transform; }
   .marquee img {
@@ -452,8 +452,8 @@
     .deco-line { max-width: 78%; }
     .marquee { margin-top: 24px; }
     .marquee img { height: 108px; border-radius: 6px; }
-    .marquee .track { gap: 8px; padding: 10px 0 44px; }
-    .marquee .track.rev { padding: 2px 0 42px; }
+    .marquee .track { gap: 8px; padding: 8px 0 3px; }
+    .marquee .track.rev { padding: 3px 0 10px; }
     .toolbar { padding: 10px 12px; gap: 8px; }
     .toolbar input[type="search"] { flex: 1 1 150px; max-width: none; padding: 12px 18px; font-size: 16px; }
     .toolbar select { flex: 0 1 auto; max-width: 46%; padding: 8px 10px; font-size: 13px; }
@@ -729,8 +729,8 @@
     }
     const zone = document.getElementById('marquee');
     const rows = [
-      { el: document.getElementById('marqueeTrack'),  picks: picks.filter((_, i) => i % 2 === 0), dir: -1, speed: 42, curve: 60 },
-      { el: document.getElementById('marqueeTrack2'), picks: picks.filter((_, i) => i % 2 === 1), dir: 1,  speed: 34, curve: 60 }
+      { el: document.getElementById('marqueeTrack'),  picks: picks.filter((_, i) => i % 2 === 0), dir: -1, speed: 42, curve: 0 },
+      { el: document.getElementById('marqueeTrack2'), picks: picks.filter((_, i) => i % 2 === 1), dir: 1,  speed: 34, curve: 0 }
     ];
     for (const row of rows) {
       for (let round = 0; round < 2; round++) {
