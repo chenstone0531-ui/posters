@@ -79,6 +79,7 @@
   .board {
     display: grid;
     gap: 2px;
+    position: relative;
     border: 1px solid var(--gold-dim);
     outline: 1px solid rgba(181,153,100,.15);
     outline-offset: 4px;
@@ -86,6 +87,28 @@
     overflow: hidden;
     box-shadow: 0 24px 70px rgba(0,0,0,.65);
     touch-action: manipulation;
+    transition: gap .5s ease;
+  }
+  .board.win {
+    gap: 0;
+    animation: win-glow 2.4s ease-in-out infinite;
+  }
+  @keyframes win-glow {
+    0%, 100% { box-shadow: 0 0 26px rgba(220,201,154,.35), 0 24px 70px rgba(0,0,0,.65); }
+    50%      { box-shadow: 0 0 58px rgba(233,221,187,.75), 0 0 110px rgba(181,153,100,.35), 0 24px 70px rgba(0,0,0,.65); }
+  }
+  .board.win::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 32%, rgba(255,248,225,.4) 50%, transparent 68%);
+    background-size: 240% 100%;
+    animation: win-sweep 2.6s ease-in-out infinite;
+  }
+  @keyframes win-sweep {
+    0%   { background-position: 130% 0; }
+    60%, 100% { background-position: -130% 0; }
   }
   .piece {
     background-repeat: no-repeat;
@@ -106,18 +129,16 @@
   }
   .board.win .piece { cursor: default; }
   .win-msg {
-    position: absolute;
-    inset: 0;
     display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(8,8,10,.55);
-    backdrop-filter: blur(2px);
     text-align: center;
-    gap: 10px;
+    margin-top: 20px;
+    animation: win-rise .9s ease .5s both;
   }
-  .board-wrap.done .win-msg { display: flex; }
+  .board-wrap.done .win-msg { display: block; }
+  @keyframes win-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
   .win-msg .t {
     font-family: var(--serif);
     font-size: clamp(30px, 7vw, 46px);
