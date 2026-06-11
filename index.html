@@ -1050,10 +1050,6 @@
   };
   ['pointerdown', 'keydown'].forEach(ev => window.addEventListener(ev, autoFS));
 
-  // 進站自動開始海報播放（✕ 可關閉回到圖牆）
-  setTimeout(() => {
-    if (flat.length) openLightbox(0);
-  }, 900);
 })();
 </script>
 </body>
