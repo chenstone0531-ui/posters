@@ -166,10 +166,28 @@
     letter-spacing: .18em;
   }
 
+  /* 輪播帶上下的流光金線 */
+  .mq-line {
+    height: 2px;
+    width: min(96%, 1500px);
+    margin: 26px auto 0;
+    border-radius: 999px;
+    background:
+      linear-gradient(90deg, transparent, rgba(233,221,187,.95), transparent) no-repeat,
+      linear-gradient(90deg, transparent 2%, var(--gold-dim) 18%, var(--gold-dim) 82%, transparent 98%);
+    background-size: 22% 100%, 100% 100%;
+    animation: line-glint 5.5s ease-in-out infinite;
+    box-shadow: 0 0 14px rgba(200,169,106,.35);
+  }
+  .mq-line.b {
+    margin: 2px auto 0;
+    animation-delay: 2.7s;
+  }
+
   /* ── 海報輪播帶 ── */
   .marquee {
     overflow: hidden;
-    margin-top: 38px;
+    margin-top: 6px;
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
   }
@@ -479,10 +497,12 @@
   <div class="deco-line"><span class="diamond"></span></div>
   <p class="sub">電影 × 戲劇 視覺設計</p>
   <span class="count" id="totalCount"></span>
+  <div class="mq-line"></div>
   <div class="marquee" id="marquee">
     <div class="track" id="marqueeTrack"></div>
     <div class="track rev" id="marqueeTrack2"></div>
   </div>
+  <div class="mq-line b"></div>
 </header>
 
 <div class="toolbar">
