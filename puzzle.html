@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>海報拼圖 — 陳正源海報作品集</title>
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --card: #18181d;
+    --text: #f2efe8;
+    --muted: #9a968e;
+    --accent: #b29760;
+    --gold-light: #dcc99a;
+    --gold-dim: rgba(181,153,100,.48);
+    --serif: "Didot", "Bodoni 72", "Playfair Display", "Songti TC", "Noto Serif TC", "Times New Roman", serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background:
+      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(169,142,93,.08), transparent 60%),
+      var(--bg);
+    color: var(--text);
+    font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 14px 50px;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(24px, 5vw, 36px);
+    letter-spacing: .14em;
+    background: linear-gradient(180deg, #f1e6c6, #d3c294 55%, #8e774a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .film-name {
+    margin-top: 8px;
+    color: var(--gold-light);
+    font-size: 15px;
+    letter-spacing: .1em;
+    min-height: 22px;
+    text-align: center;
+  }
+  .bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 14px 0 16px;
+  }
+  .bar .stat {
+    color: var(--muted);
+    font-size: 14px;
+    letter-spacing: .06em;
+    padding: 6px 4px;
+    min-width: 74px;
+    text-align: center;
+  }
+  .bar .stat b { color: var(--gold-light); font-weight: 600; }
+  button, select, .home {
+    background: var(--card);
+    border: 1px solid #2e2e36;
+    border-radius: 999px;
+    color: var(--text);
+    font-size: 14px;
+    padding: 9px 18px;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: .06em;
+  }
+  button:hover, select:hover, .home:hover { border-color: var(--accent); }
+  .board-wrap { position: relative; }
+  .board {
+    display: grid;
+    gap: 2px;
+    border: 1px solid var(--gold-dim);
+    outline: 1px solid rgba(181,153,100,.15);
+    outline-offset: 4px;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 24px 70px rgba(0,0,0,.65);
+    touch-action: manipulation;
+  }
+  .piece {
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease, opacity .3s;
+    position: relative;
+  }
+  .piece.sel {
+    z-index: 2;
+    transform: scale(.93);
+    box-shadow: 0 0 0 3px var(--gold-light), 0 0 18px rgba(220,201,154,.8);
+  }
+  .piece.good::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(181,153,100,.0);
+  }
+  .board.win .piece { cursor: default; }
+  .win-msg {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(8,8,10,.55);
+    backdrop-filter: blur(2px);
+    text-align: center;
+    gap: 10px;
+  }
+  .board-wrap.done .win-msg { display: flex; }
+  .win-msg .t {
+    font-family: var(--serif);
+    font-size: clamp(30px, 7vw, 46px);
+    letter-spacing: .2em;
+    background: linear-gradient(180deg, #f6ecd0, #d3c294 55%, #8e774a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(220,201,154,.35);
+  }
+  .win-msg .s { color: var(--gold-light); font-size: 15px; letter-spacing: .1em; }
+  .hint {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    width: 92px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 4px;
+    opacity: .85;
+    cursor: pointer;
+    transition: width .25s ease;
+    z-index: 5;
+  }
+  .hint.big { width: min(46vw, 300px); opacity: 1; }
+  .hint-label {
+    position: fixed;
+    right: 14px;
+    bottom: 16px;
+    transform: translateY(100%);
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: .1em;
+    z-index: 5;
+    pointer-events: none;
+  }
+  footer { margin-top: 26px; color: var(--muted); font-size: 12px; letter-spacing: .1em; }
+</style>
+</head>
+<body>
+
+<h1>海 報 拼 圖</h1>
+<div class="film-name" id="filmName"></div>
+
+<div class="bar">
+  <a class="home" href="index.html">‹ 作品集</a>
+  <select id="level">
+    <option value="3x4">簡單 3×4</option>
+    <option value="4x5" selected>中等 4×5</option>
+    <option value="5x7">困難 5×7</option>
+  </select>
+  <button id="newBtn">換一張海報</button>
+  <button id="shuffleBtn">重新打散</button>
+  <span class="stat">步數 <b id="moves">0</b></span>
+  <span class="stat">時間 <b id="time">0:00</b></span>
+</div>
+
+<div class="board-wrap" id="wrap">
+  <div class="board" id="board"></div>
+  <div class="win-msg">
+    <div class="t">完 成！</div>
+    <div class="s" id="winStat"></div>
+  </div>
+</div>
+
+<img class="hint" id="hintImg" alt="參考圖" title="點一下放大/縮小參考圖">
+
+<footer>© 陳正源 STONE CHEN 海報作品集</footer>
+
+<script src="images.js"></script>
+<script>
+(function () {
+  const board = document.getElementById('board');
+  const wrap = document.getElementById('wrap');
+  const filmName = document.getElementById('filmName');
+  const movesEl = document.getElementById('moves');
+  const timeEl = document.getElementById('time');
+  const winStat = document.getElementById('winStat');
+  const hintImg = document.getElementById('hintImg');
+  const levelSel = document.getElementById('level');
+
+  const portraits = DATA.items.filter(it => it.h > it.w * 1.15);
+
+  let cols = 4, rows = 5;
+  let pieces = [];          // DOM 元素，依目前格位排列
+  let selected = null;
+  let moves = 0, startT = 0, timer = null, playing = false;
+  let cur = null;           // 目前海報
+
+  function fmt(sec) {
+    const m = Math.floor(sec / 60), s = sec % 60;
+    return m + ':' + String(s).padStart(2, '0');
+  }
+  function tickTime() {
+    timeEl.textContent = fmt(Math.floor((Date.now() - startT) / 1000));
+  }
+
+  function pickPoster() {
+    cur = portraits[Math.floor(Math.random() * portraits.length)];
+    filmName.textContent = '《' + cur.g + '》';
+    hintImg.src = 'thumbs/' + cur.f;
+  }
+
+  function boardSize() {
+    const maxW = Math.min(440, window.innerWidth - 28);
+    const maxH = window.innerHeight - 260;
+    const ar = cur.w / cur.h;                 // 寬/高
+    let w = maxW, h = w / ar;
+    if (h > maxH) { h = maxH; w = h * ar; }
+    return [Math.round(w), Math.round(h)];
+  }
+
+  function build(shuffleOnly) {
+    if (!shuffleOnly) pickPoster();
+    [cols, rows] = levelSel.value.split('x').map(Number);
+    const [W, H] = boardSize();
+    board.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+    board.style.width = W + 'px';
+    board.style.height = H + 'px';
+    board.classList.remove('win');
+    wrap.classList.remove('done');
+
+    const n = cols * rows;
+    const order = [...Array(n).keys()];
+    // 打散（避免一開始就完成）
+    do {
+      for (let i = n - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+    } while (order.every((v, i) => v === i));
+
+    board.innerHTML = '';
+    pieces = [];
+    const url = 'full/' + cur.f;
+    for (let slot = 0; slot < n; slot++) {
+      const orig = order[slot];           // 這個格子目前放的是第 orig 塊
+      const d = document.createElement('div');
+      d.className = 'piece';
+      d.dataset.orig = orig;
+      const ox = (orig % cols) / (cols - 1) * 100;
+      const oy = Math.floor(orig / cols) / (rows - 1) * 100;
+      d.style.backgroundImage = 'url("' + url + '")';
+      d.style.backgroundSize = (cols * 100) + '% ' + (rows * 100) + '%';
+      d.style.backgroundPosition = ox + '% ' + oy + '%';
+      d.addEventListener('click', () => onPiece(d));
+      board.appendChild(d);
+      pieces.push(d);
+    }
+    selected = null;
+    moves = 0;
+    movesEl.textContent = '0';
+    startT = Date.now();
+    clearInterval(timer);
+    timer = setInterval(tickTime, 500);
+    tickTime();
+    playing = true;
+  }
+
+  function onPiece(d) {
+    if (!playing) return;
+    if (!selected) {
+      selected = d;
+      d.classList.add('sel');
+      return;
+    }
+    if (selected === d) {
+      d.classList.remove('sel');
+      selected = null;
+      return;
+    }
+    // 互換兩塊的圖面
+    const a = selected, b = d;
+    ['orig'].forEach(() => {
+      const tmpO = a.dataset.orig; a.dataset.orig = b.dataset.orig; b.dataset.orig = tmpO;
+      const tmpP = a.style.backgroundPosition;
+      a.style.backgroundPosition = b.style.backgroundPosition;
+      b.style.backgroundPosition = tmpP;
+    });
+    a.classList.remove('sel');
+    selected = null;
+    moves++;
+    movesEl.textContent = moves;
+    checkWin();
+  }
+
+  function checkWin() {
+    const ok = pieces.every((p, i) => Number(p.dataset.orig) === i);
+    if (!ok) return;
+    playing = false;
+    clearInterval(timer);
+    board.classList.add('win');
+    wrap.classList.add('done');
+    winStat.textContent = '《' + cur.g + '》 · ' + moves + ' 步 · ' + fmt(Math.floor((Date.now() - startT) / 1000));
+  }
+
+  hintImg.addEventListener('click', () => hintImg.classList.toggle('big'));
+  document.getElementById('newBtn').addEventListener('click', () => build(false));
+  document.getElementById('shuffleBtn').addEventListener('click', () => build(true));
+  levelSel.addEventListener('change', () => build(true));
+  window.addEventListener('resize', () => {
+    if (!cur) return;
+    const [W, H] = boardSize();
+    board.style.width = W + 'px';
+    board.style.height = H + 'px';
+  });
+
+  build(false);
+})();
+</script>
+</body>
+</html>
