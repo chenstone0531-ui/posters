@@ -349,6 +349,7 @@
     font-weight: 700;
     letter-spacing: .06em;
   }
+  .film-head .ym { color: var(--accent); font-size: 15px; letter-spacing: .06em; }
   .film-head .n { color: var(--muted); font-size: 13px; }
   .film-head .est { color: #6f6b63; font-size: 12px; }
 
@@ -564,7 +565,7 @@
 </header>
 
 <div class="toolbar">
-  <input type="search" id="searchBox" placeholder="搜尋片名或演員…">
+  <input type="search" id="searchBox" placeholder="搜尋片名、演員或年份…">
   <select id="filmSelect"><option value="">全部作品（依年份）</option></select>
   <span class="info" id="shownInfo"></span>
   <button class="fs-btn" id="fsBtn" title="全螢幕切換">⛶</button>
@@ -587,7 +588,7 @@
 
 <footer>© 陳正源 STONE CHEN 電影與戲劇海報作品集</footer>
 
-<script src="images.js?v=15"></script>
+<script src="images.js?v=16"></script>
 <script src="cast.js"></script>
 <script>
 (function () {
@@ -894,7 +895,13 @@
     for (const f of films) {
       if (sel && f.n !== sel) continue;
       const castStr = (typeof CAST !== 'undefined' && CAST[f.n]) ? CAST[f.n].toLowerCase() : '';
-      if (q && !f.n.toLowerCase().includes(q) && !castStr.includes(q)) continue;
+      if (q) {
+        if (/^\d{4}$/.test(q)) {                      // 輸入四位數字＝搜年份
+          if (String(f.y) !== q) continue;
+        } else if (!f.n.toLowerCase().includes(q) && !castStr.includes(q)) {
+          continue;
+        }
+      }
       const items = itemsByFilm.get(f.n);
       shownFilms++;
 
@@ -913,7 +920,10 @@
       sec.className = 'film';
       const head = document.createElement('div');
       head.className = 'film-head';
-      head.innerHTML = '<h2>' + f.n + '</h2><span class="n">' + items.length + ' 件</span>' +
+      const ym = (!isLast && f.y) ? (f.y + (f.m ? '.' + String(f.m).padStart(2, '0') : '')) : '';
+      head.innerHTML = '<h2>' + f.n + '</h2>' +
+        (ym ? '<span class="ym">' + ym + '</span>' : '') +
+        '<span class="n">' + items.length + ' 件</span>' +
         (f.e && !isLast ? '<span class="est">年份推估</span>' : '');
       sec.appendChild(head);
 
