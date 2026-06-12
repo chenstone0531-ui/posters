@@ -160,6 +160,17 @@ input[type=range] { width:100%; accent-color:var(--gold); }
 .stat { background:var(--panel); border:1px solid rgba(169,142,93,.2); border-radius:14px; padding:14px 8px; text-align:center; }
 .stat b { display:block; font-size:22px; color:var(--gold-bright); }
 .stat span { font-size:12px; color:var(--muted); }
+#ig-input { width:100%; background:var(--panel2); border:1px solid rgba(169,142,93,.3); border-radius:12px; padding:11px 14px; color:var(--text); font-size:14px; outline:none; }
+#ig-input:focus { border-color:var(--gold); }
+.ig-chip { font-size:12px; color:var(--gold-bright); }
+.invite-card { border-radius:18px; padding:22px 18px; text-align:center; background:linear-gradient(135deg,#1f1a12,#2a2014 60%,#1f1a12); border:1px solid rgba(169,142,93,.5); margin-bottom:12px; }
+.invite-card .big { font-size:22px; font-weight:700; letter-spacing:3px; background:linear-gradient(100deg,var(--gold-dim),var(--gold-bright),var(--gold-dim)); background-size:200% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:shimmer 4s linear infinite; margin:6px 0; }
+.invite-card p { font-size:13px; color:var(--muted); }
+.invite-card .url { font-size:11px; color:var(--gold); margin-top:10px; word-break:break-all; }
+.share-row { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+.share-row button { background:var(--panel2); border:1px solid rgba(169,142,93,.35); border-radius:12px; color:var(--text); font-size:11px; padding:10px 2px; cursor:pointer; display:flex; flex-direction:column; gap:4px; align-items:center; }
+.share-row button:active { transform:scale(.94); }
+.share-row button span { font-size:18px; }
 
 /* ===== 底部導覽 ===== */
 #tabbar {
@@ -261,7 +272,12 @@ input[type=range] { width:100%; accent-color:var(--gold); }
         <div class="ava">源</div>
         <div><b style="font-size:17px;">正源</b>
           <p style="font-size:13px;color:var(--muted);margin-top:3px;" id="me-loc">海報設計師 · 電影迷</p>
+          <p class="ig-chip" id="me-ig" style="margin-top:2px;"></p>
         </div>
+      </div>
+      <div class="setting">
+        <label>IG 帳號 <b style="font-size:12px;color:var(--muted);font-weight:400;">配對成功後對方看得到</b></label>
+        <input id="ig-input" placeholder="@你的IG帳號" autocomplete="off">
       </div>
       <div class="setting">
         <label>距離範圍 <b id="range-val">5 公里</b></label>
@@ -279,6 +295,21 @@ input[type=range] { width:100%; accent-color:var(--gold); }
         <div class="stat"><b id="st-like">0</b><span>送出喜歡</span></div>
         <div class="stat"><b id="st-match">0</b><span>配對成功</span></div>
         <div class="stat"><b id="st-near">0</b><span>附近的人</span></div>
+      </div>
+      <h3 style="margin-top:26px;">邀請朋友</h3>
+      <p class="sub">把 Threads / IG / FB 的網友拉進來，互相就看得到</p>
+      <div class="invite-card">
+        <p>✨ 我在這裡等你</p>
+        <div class="big">附近 NEARBY</div>
+        <p>遇見身邊 5 公里內的人，來找我配對</p>
+        <div class="url">chenstone0531-ui.github.io/posters/match.html</div>
+      </div>
+      <div class="share-row">
+        <button id="sh-share"><span>📤</span>分享</button>
+        <button id="sh-line"><span>💚</span>LINE</button>
+        <button id="sh-fb"><span>📘</span>FB</button>
+        <button id="sh-th"><span>🧵</span>Threads</button>
+        <button id="sh-copy"><span>🔗</span>複製</button>
       </div>
     </section>
   </main>
@@ -320,7 +351,7 @@ input[type=range] { width:100%; accent-color:var(--gold); }
     <header>
       <button id="convo-back">‹</button>
       <div class="ava" id="convo-ava" style="width:40px;height:40px;font-size:16px;"></div>
-      <div><b id="convo-name"></b><p style="font-size:12px;color:var(--gold);">● 線上</p></div>
+      <div><b id="convo-name"></b><p style="font-size:12px;color:var(--gold);">● 線上 <span class="ig-chip" id="convo-ig"></span></p></div>
     </header>
     <div id="convo-msgs"></div>
     <div id="helper-bar">
@@ -344,16 +375,16 @@ const GRADS = [
   ["#3c3489","#afa9ec"],["#72243e","#ed93b1"]
 ];
 const PEOPLE = [
-  { name:"小雅", age:28, g:"F", bio:"喜歡假日去爬山，最近迷上老電影海報 🎬", tags:["電影","爬山","攝影"], likedYou:true },
-  { name:"欣怡", age:25, g:"F", bio:"咖啡因中毒患者，尋找一起探店的人", tags:["咖啡","探店","貓派"], likedYou:false },
-  { name:"佩珊", age:31, g:"F", bio:"劇場工作者，週末常看舞台劇", tags:["戲劇","音樂","紅酒"], likedYou:true },
-  { name:"志明", age:30, g:"M", bio:"健身教練，也愛下廚做健康餐", tags:["健身","料理","籃球"], likedYou:false },
-  { name:"雨彤", age:26, g:"F", bio:"插畫接案中，喜歡逛美術館", tags:["插畫","美術館","旅行"], likedYou:true },
-  { name:"家豪", age:33, g:"M", bio:"工程師，假日騎單車環河濱", tags:["單車","桌遊","美食"], likedYou:false },
-  { name:"思婷", age:29, g:"F", bio:"剛搬來這區，想認識附近的朋友！", tags:["瑜珈","烘焙","狗派"], likedYou:false },
-  { name:"婉婷", age:27, g:"F", bio:"電影系畢業，海報控，收藏了一櫃子", tags:["電影","海報","展覽"], likedYou:true },
-  { name:"俊傑", age:28, g:"M", bio:"攝影師，街拍與人像", tags:["攝影","爵士","登山"], likedYou:false },
-  { name:"乃文", age:24, g:"F", bio:"研究生，咖啡廳寫論文常駐民", tags:["閱讀","手帳","茶"], likedYou:false }
+  { name:"小雅", age:28, g:"F", bio:"喜歡假日去爬山，最近迷上老電影海報 🎬", tags:["電影","爬山","攝影"], likedYou:true, ig:"@ya.hiking_demo" },
+  { name:"欣怡", age:25, g:"F", bio:"咖啡因中毒患者，尋找一起探店的人", tags:["咖啡","探店","貓派"], likedYou:false, ig:"@cafe.xinyi_demo" },
+  { name:"佩珊", age:31, g:"F", bio:"劇場工作者，週末常看舞台劇", tags:["戲劇","音樂","紅酒"], likedYou:true, ig:"@stage.psan_demo" },
+  { name:"志明", age:30, g:"M", bio:"健身教練，也愛下廚做健康餐", tags:["健身","料理","籃球"], likedYou:false, ig:"@fit.ming_demo" },
+  { name:"雨彤", age:26, g:"F", bio:"插畫接案中，喜歡逛美術館", tags:["插畫","美術館","旅行"], likedYou:true, ig:"@yutong.draws_demo" },
+  { name:"家豪", age:33, g:"M", bio:"工程師，假日騎單車環河濱", tags:["單車","桌遊","美食"], likedYou:false, ig:"@bike.howard_demo" },
+  { name:"思婷", age:29, g:"F", bio:"剛搬來這區，想認識附近的朋友！", tags:["瑜珈","烘焙","狗派"], likedYou:false, ig:"@sito.bakes_demo" },
+  { name:"婉婷", age:27, g:"F", bio:"電影系畢業，海報控，收藏了一櫃子", tags:["電影","海報","展覽"], likedYou:true, ig:"@poster.wan_demo" },
+  { name:"俊傑", age:28, g:"M", bio:"攝影師，街拍與人像", tags:["攝影","爵士","登山"], likedYou:false, ig:"@jj.snaps_demo" },
+  { name:"乃文", age:24, g:"F", bio:"研究生，咖啡廳寫論文常駐民", tags:["閱讀","手帳","茶"], likedYou:false, ig:"@nw.reads_demo" }
 ];
 const REPLIES = ["哈囉～很開心配對到你！","你也住這附近嗎？我常去河堤散步","看你的興趣跟我好像 😊","週末有空一起喝杯咖啡嗎？","你的頭貼是自己設計的嗎？好好看！"];
 const HELPERS = {
@@ -569,6 +600,7 @@ function renderChatList() {
 function openConvo(m) {
   convoUser = m; m.unread = false;
   document.getElementById("convo-name").textContent = m.name;
+  document.getElementById("convo-ig").textContent = m.ig ? "· IG " + m.ig : "";
   const av = document.getElementById("convo-ava");
   av.textContent = m.name[0]; av.style.background = `linear-gradient(135deg,${m.grad})`;
   renderMsgs();
@@ -646,6 +678,31 @@ document.querySelectorAll("#seg-gender button").forEach(b => {
     b.classList.add("on"); genderPref = b.dataset.g; buildDeck();
   };
 });
+/* ===== IG 帳號與邀請分享 ===== */
+const SITE_URL = "https://chenstone0531-ui.github.io/posters/match.html";
+const SHARE_TEXT = "我在「附近 Nearby」✨ 來找我配對，看看我們距離多近！";
+const igInp = document.getElementById("ig-input");
+function updateMeIG() {
+  let v = (localStorage.getItem("myIG") || "").trim();
+  if (v && !v.startsWith("@")) v = "@" + v;
+  document.getElementById("me-ig").textContent = v ? "IG " + v : "";
+}
+igInp.value = localStorage.getItem("myIG") || "";
+updateMeIG();
+igInp.oninput = () => { localStorage.setItem("myIG", igInp.value.trim()); updateMeIG(); };
+async function copyLink() {
+  try { await navigator.clipboard.writeText(SHARE_TEXT + " " + SITE_URL); toast("🔗 邀請連結已複製"); }
+  catch { toast("複製失敗，請長按網址手動複製"); }
+}
+document.getElementById("sh-copy").onclick = copyLink;
+document.getElementById("sh-share").onclick = () => {
+  if (navigator.share) navigator.share({ title:"附近 Nearby", text:SHARE_TEXT, url:SITE_URL }).catch(()=>{});
+  else copyLink();
+};
+document.getElementById("sh-line").onclick = () => window.open("https://line.me/R/share?text=" + encodeURIComponent(SHARE_TEXT + " " + SITE_URL));
+document.getElementById("sh-fb").onclick = () => window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(SITE_URL));
+document.getElementById("sh-th").onclick = () => window.open("https://www.threads.net/intent/post?text=" + encodeURIComponent(SHARE_TEXT + " " + SITE_URL));
+
 function toast(t) {
   const el = document.createElement("div");
   el.className="toast"; el.textContent=t;
