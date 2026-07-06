@@ -547,62 +547,6 @@
     .lightbox img { max-width: 96vw; max-height: 80vh; }
   }
 
-  /* ── 數位商品販售區 ── */
-  .shop-wrap {
-    border-top: 3px double var(--gold-dim);
-    padding: 58px 24px 46px;
-    max-width: 1100px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .shop-wrap h2 {
-    font-family: var(--serif);
-    font-size: 30px;
-    letter-spacing: .14em;
-    margin-bottom: 10px;
-  }
-  .shop-wrap .lead {
-    color: var(--muted); font-size: 15px; letter-spacing: .06em;
-    line-height: 1.9; max-width: 640px; margin: 0 auto 30px;
-  }
-  .shop-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
-    margin-bottom: 26px; text-align: left;
-  }
-  .shop-card {
-    display: flex; flex-direction: column;
-    background: linear-gradient(160deg, rgba(181,153,100,.06), rgba(24,24,29,.6));
-    border: 1px solid #2a2a31; border-radius: var(--radius);
-    overflow: hidden; transition: border-color .3s, transform .3s;
-  }
-  .shop-card:hover { border-color: var(--accent); transform: translateY(-3px); }
-  .shop-thumb {
-    aspect-ratio: 4/3; display:flex; align-items:center; justify-content:center;
-    font-size: 40px;
-    background:
-      radial-gradient(circle at 30% 25%, rgba(210,191,142,.16), transparent 60%),
-      linear-gradient(135deg, #1a1a20, #222028);
-    border-bottom: 1px solid #2a2a31;
-  }
-  .shop-body { padding: 16px 16px 18px; display:flex; flex-direction:column; flex:1; }
-  .shop-body h3 {
-    font-family: var(--serif); font-size: 16px; letter-spacing: .04em;
-    color: var(--gold-light); margin-bottom: 6px;
-  }
-  .shop-body p { color: var(--muted); font-size: 12.5px; line-height: 1.7; margin-bottom: 14px; flex:1; }
-  .shop-foot { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-  .shop-price { font-family: var(--serif); font-size: 16px; color: var(--text); }
-  .shop-price b { color: var(--gold-light); }
-  .shop-buy {
-    text-decoration:none; font-size: 13px; letter-spacing:.04em; font-weight:700;
-    color:#1a1407; background: linear-gradient(100deg, #b89a5e, #d3c294, #8e774a);
-    padding: 8px 16px; border-radius: 999px; white-space:nowrap;
-    transition: transform .2s;
-  }
-  .shop-buy:hover { transform: translateY(-1px); }
-  .shop-note { color: var(--muted); font-size: 12.5px; letter-spacing:.04em; }
-  @media (max-width: 880px){ .shop-grid{ grid-template-columns: repeat(2,1fr);} }
-  @media (max-width: 480px){ .shop-grid{ grid-template-columns: 1fr;} .shop-wrap h2{font-size:23px;} }
 </style>
 </head>
 <body>
@@ -628,7 +572,6 @@
   <button class="fs-btn" id="fsBtn" title="全螢幕切換">⛶</button>
   <a class="puzzle-link" href="puzzle.html" title="海報拼圖小遊戲">🧩 海報拼圖小遊戲</a>
   <a class="puzzle-link" href="guess.html" title="看局部猜片名小遊戲">🔍 猜片名小遊戲</a>
-  <a class="puzzle-link" href="#shop" title="設計模板與素材">🛍️ 模板商店</a>
 </div>
 
 <div class="content" id="content"></div>
@@ -643,59 +586,6 @@
   <button class="lb-btn lb-next" id="lbNext" title="下一張 (→)">›</button>
   <div class="caption" id="lbCaption"></div>
 </div>
-
-<section class="shop-wrap" id="shop">
-  <h2 class="gold-text">設計模板 · 數位商品</h2>
-  <p class="lead">把十餘年的海報設計經驗，做成你也能直接套用的模板與素材。<br>下載即用，適合劇團、活動主辦與設計同好。</p>
-
-  <div class="shop-grid">
-    <div class="shop-card">
-      <div class="shop-thumb">🎞️</div>
-      <div class="shop-body">
-        <h3>電影感海報模板包</h3>
-        <p>10 款可編輯主視覺版型（Canva／PSD），含字體與配色，換圖換字即成片。</p>
-        <div class="shop-foot">
-          <span class="shop-price">NT$ <b>490</b></span>
-          <a class="shop-buy" href="#" data-buy="poster-pack" target="_blank" rel="noopener">購買</a>
-        </div>
-      </div>
-    </div>
-    <div class="shop-card">
-      <div class="shop-thumb">🎨</div>
-      <div class="shop-body">
-        <h3>電影風配色卡 × 30</h3>
-        <p>30 組精選電影級配色（含色碼），直接套進設計，告別配色障礙。</p>
-        <div class="shop-foot">
-          <span class="shop-price">NT$ <b>290</b></span>
-          <a class="shop-buy" href="#" data-buy="color-pack" target="_blank" rel="noopener">購買</a>
-        </div>
-      </div>
-    </div>
-    <div class="shop-card">
-      <div class="shop-thumb">📱</div>
-      <div class="shop-body">
-        <h3>社群貼文版型組</h3>
-        <p>IG／FB 直式・方形・限動共 12 款版型，主視覺一鍵延伸成整套宣傳。</p>
-        <div class="shop-foot">
-          <span class="shop-price">NT$ <b>390</b></span>
-          <a class="shop-buy" href="#" data-buy="social-pack" target="_blank" rel="noopener">購買</a>
-        </div>
-      </div>
-    </div>
-    <div class="shop-card">
-      <div class="shop-thumb">✨</div>
-      <div class="shop-body">
-        <h3>質感素材包</h3>
-        <p>金箔・噴墨・膠片刮痕・紙紋等 40+ 高解析素材，瞬間提升海報質感。</p>
-        <div class="shop-foot">
-          <span class="shop-price">NT$ <b>590</b></span>
-          <a class="shop-buy" href="#" data-buy="texture-pack" target="_blank" rel="noopener">購買</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <p class="shop-note">＊購買後以 Email 寄送下載連結；商品陸續上架中，想要的品項也歡迎<a href="mailto:chenstone0531@gmail.com?subject=模板商品詢問" style="color:var(--gold-light)">來信告訴我</a>。</p>
-</section>
 
 <footer>© 陳正源 STONE CHEN 電影與戲劇海報作品集</footer>
 
