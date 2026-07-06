@@ -1067,33 +1067,5 @@
 })();
 </script>
 
-<script>
-/* ── 商品購買連結設定 ──
-   申請好收款平台（Gumroad / 蝦皮 / 街口…）後，把各商品的購買網址貼到下面對應的欄位即可。
-   留空的商品會自動改成「來信下單」，不會壞掉。 */
-(function () {
-  const BUY_LINKS = {
-    'poster-pack':  '',   // 電影感海報模板包
-    'color-pack':   '',   // 電影風配色卡 ×30
-    'social-pack':  '',   // 社群貼文版型組
-    'texture-pack': '',   // 質感素材包
-  };
-  const EMAIL = 'chenstone0531@gmail.com';
-  document.querySelectorAll('.shop-buy').forEach(a => {
-    const key = a.dataset.buy;
-    const url = BUY_LINKS[key];
-    const title = a.closest('.shop-card').querySelector('h3').textContent.trim();
-    if (url) {
-      a.href = url;
-    } else {
-      a.href = 'mailto:' + EMAIL +
-        '?subject=' + encodeURIComponent('訂購：' + title) +
-        '&body=' + encodeURIComponent('您好，我想訂購「' + title + '」，請問如何付款與取得檔案？');
-      a.removeAttribute('target');
-      a.textContent = '來信下單';
-    }
-  });
-})();
-</script>
 </body>
 </html>
