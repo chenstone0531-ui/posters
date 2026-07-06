@@ -545,7 +545,165 @@
     .lb-prev { left: 8px; }
     .lb-next { right: 8px; }
     .lightbox img { max-width: 96vw; max-height: 80vh; }
+    .hire-grid { grid-template-columns: 1fr !important; }
+    .hire-wrap { padding: 40px 16px 32px !important; }
+    .hire h2 { font-size: 23px !important; }
   }
+
+  /* ── 接案委託區 ── */
+  .hire-wrap {
+    border-top: 3px double var(--gold-dim);
+    padding: 58px 24px 46px;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hire h2 {
+    font-family: var(--serif);
+    font-size: 30px;
+    letter-spacing: .14em;
+    margin-bottom: 10px;
+  }
+  .hire .lead {
+    color: var(--muted);
+    font-size: 15px;
+    letter-spacing: .06em;
+    line-height: 1.9;
+    max-width: 640px;
+    margin: 0 auto 14px;
+  }
+  .hire-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 34px 0 8px;
+    text-align: left;
+  }
+  .hire-card {
+    background: linear-gradient(160deg, rgba(181,153,100,.06), rgba(24,24,29,.6));
+    border: 1px solid #2a2a31;
+    border-radius: var(--radius);
+    padding: 24px 22px;
+    transition: border-color .3s, transform .3s;
+  }
+  .hire-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .hire-card .ic { font-size: 22px; }
+  .hire-card h3 {
+    font-family: var(--serif);
+    font-size: 19px;
+    letter-spacing: .06em;
+    margin: 12px 0 6px;
+    color: var(--gold-light);
+  }
+  .hire-card p {
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.75;
+    margin-bottom: 14px;
+  }
+  .hire-card .price {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--text);
+    letter-spacing: .04em;
+    border-top: 1px solid #2a2a31;
+    padding-top: 12px;
+  }
+  .hire-card .price b { color: var(--gold-light); font-size: 17px; }
+  .hire-note {
+    color: var(--muted);
+    font-size: 12.5px;
+    letter-spacing: .04em;
+    margin: 6px 0 30px;
+  }
+  .hire-flow {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px 8px;
+    margin: 0 auto 34px;
+    max-width: 720px;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: .05em;
+  }
+  .hire-flow span { white-space: nowrap; }
+  .hire-flow .arr { color: var(--accent); }
+  .hire-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    background: linear-gradient(100deg, #9e8253, #d3c294 50%, #8e774a);
+    color: #1a1407;
+    font-weight: 700;
+    letter-spacing: .08em;
+    padding: 15px 38px;
+    border-radius: 999px;
+    font-size: 16px;
+    box-shadow: 0 6px 24px rgba(169,142,93,.28);
+    transition: transform .25s, box-shadow .25s;
+  }
+  .hire-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(169,142,93,.42); }
+  .hire-cta.line { background: linear-gradient(100deg,#1fb350,#06c755); color:#062d12; }
+  .hire-ctas { display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+
+  /* ── 數位商品販售區 ── */
+  .shop-wrap {
+    border-top: 3px double var(--gold-dim);
+    padding: 58px 24px 46px;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .shop-wrap h2 {
+    font-family: var(--serif);
+    font-size: 30px;
+    letter-spacing: .14em;
+    margin-bottom: 10px;
+  }
+  .shop-wrap .lead {
+    color: var(--muted); font-size: 15px; letter-spacing: .06em;
+    line-height: 1.9; max-width: 640px; margin: 0 auto 30px;
+  }
+  .shop-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    margin-bottom: 26px; text-align: left;
+  }
+  .shop-card {
+    display: flex; flex-direction: column;
+    background: linear-gradient(160deg, rgba(181,153,100,.06), rgba(24,24,29,.6));
+    border: 1px solid #2a2a31; border-radius: var(--radius);
+    overflow: hidden; transition: border-color .3s, transform .3s;
+  }
+  .shop-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .shop-thumb {
+    aspect-ratio: 4/3; display:flex; align-items:center; justify-content:center;
+    font-size: 40px;
+    background:
+      radial-gradient(circle at 30% 25%, rgba(210,191,142,.16), transparent 60%),
+      linear-gradient(135deg, #1a1a20, #222028);
+    border-bottom: 1px solid #2a2a31;
+  }
+  .shop-body { padding: 16px 16px 18px; display:flex; flex-direction:column; flex:1; }
+  .shop-body h3 {
+    font-family: var(--serif); font-size: 16px; letter-spacing: .04em;
+    color: var(--gold-light); margin-bottom: 6px;
+  }
+  .shop-body p { color: var(--muted); font-size: 12.5px; line-height: 1.7; margin-bottom: 14px; flex:1; }
+  .shop-foot { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .shop-price { font-family: var(--serif); font-size: 16px; color: var(--text); }
+  .shop-price b { color: var(--gold-light); }
+  .shop-buy {
+    text-decoration:none; font-size: 13px; letter-spacing:.04em; font-weight:700;
+    color:#1a1407; background: linear-gradient(100deg, #b89a5e, #d3c294, #8e774a);
+    padding: 8px 16px; border-radius: 999px; white-space:nowrap;
+    transition: transform .2s;
+  }
+  .shop-buy:hover { transform: translateY(-1px); }
+  .shop-note { color: var(--muted); font-size: 12.5px; letter-spacing:.04em; }
+  @media (max-width: 880px){ .shop-grid{ grid-template-columns: repeat(2,1fr);} }
+  @media (max-width: 480px){ .shop-grid{ grid-template-columns: 1fr;} .shop-wrap h2{font-size:23px;} }
 </style>
 </head>
 <body>
@@ -571,6 +729,8 @@
   <button class="fs-btn" id="fsBtn" title="全螢幕切換">⛶</button>
   <a class="puzzle-link" href="puzzle.html" title="海報拼圖小遊戲">🧩 海報拼圖小遊戲</a>
   <a class="puzzle-link" href="guess.html" title="看局部猜片名小遊戲">🔍 猜片名小遊戲</a>
+  <a class="puzzle-link" href="#hire" title="設計委託與接案">💼 設計委託</a>
+  <a class="puzzle-link" href="#shop" title="設計模板與素材">🛍️ 模板商店</a>
 </div>
 
 <div class="content" id="content"></div>
@@ -586,10 +746,102 @@
   <div class="caption" id="lbCaption"></div>
 </div>
 
+<section class="hire-wrap" id="hire">
+  <h2 class="gold-text">設計委託 · 接案服務</h2>
+  <p class="lead">十餘年電影與戲劇主視覺經驗，一人即可從概念、設計到成品交付。<br>承接電影、舞台劇、活動與品牌的海報與整體視覺。</p>
+
+  <div class="hire-grid">
+    <div class="hire-card">
+      <div class="ic">🎬</div>
+      <h3>單張主視覺</h3>
+      <p>電影／戲劇／活動主海報一張，含 1 款主視覺概念、2 次修改、輸出印刷檔。</p>
+      <div class="price">NT$ <b>8,000</b> 起</div>
+    </div>
+    <div class="hire-card">
+      <div class="ic">🎟️</div>
+      <h3>整套宣傳包</h3>
+      <p>主視覺 + 社群貼文圖 + 直式／橫式延伸 + 票券或 DM，一致風格整組產出。</p>
+      <div class="price">NT$ <b>20,000</b> 起</div>
+    </div>
+    <div class="hire-card">
+      <div class="ic">✨</div>
+      <h3>品牌／長期合作</h3>
+      <p>系列檔期、劇團或品牌的長期視覺維護，依檔期數量與用途客製報價。</p>
+      <div class="price">歡迎 <b>洽詢</b></div>
+    </div>
+  </div>
+  <p class="hire-note">＊以上為參考價，實際依尺寸、用途、授權範圍與交件時程調整。</p>
+
+  <div class="hire-flow">
+    <span>① 來信說明需求</span><span class="arr">→</span>
+    <span>② 報價與時程確認</span><span class="arr">→</span>
+    <span>③ 設計提案</span><span class="arr">→</span>
+    <span>④ 修改定稿</span><span class="arr">→</span>
+    <span>⑤ 交付印刷檔</span>
+  </div>
+
+  <div class="hire-ctas">
+    <a class="hire-cta" href="mailto:chenstone0531@gmail.com?subject=海報設計委託詢問&amp;body=您好，我想委託海報設計，需求如下：%0D%0A%0D%0A・類型（電影／戲劇／活動）：%0D%0A・用途與尺寸：%0D%0A・希望交件日期：%0D%0A・預算範圍：%0D%0A">✉️ 來信詢價</a>
+  </div>
+</section>
+
+<section class="shop-wrap" id="shop">
+  <h2 class="gold-text">設計模板 · 數位商品</h2>
+  <p class="lead">把十餘年的海報設計經驗，做成你也能直接套用的模板與素材。<br>下載即用，適合劇團、活動主辦與設計同好。</p>
+
+  <div class="shop-grid">
+    <div class="shop-card">
+      <div class="shop-thumb">🎞️</div>
+      <div class="shop-body">
+        <h3>電影感海報模板包</h3>
+        <p>10 款可編輯主視覺版型（Canva／PSD），含字體與配色，換圖換字即成片。</p>
+        <div class="shop-foot">
+          <span class="shop-price">NT$ <b>490</b></span>
+          <a class="shop-buy" href="#" data-buy="poster-pack" target="_blank" rel="noopener">購買</a>
+        </div>
+      </div>
+    </div>
+    <div class="shop-card">
+      <div class="shop-thumb">🎨</div>
+      <div class="shop-body">
+        <h3>電影風配色卡 × 30</h3>
+        <p>30 組精選電影級配色（含色碼），直接套進設計，告別配色障礙。</p>
+        <div class="shop-foot">
+          <span class="shop-price">NT$ <b>290</b></span>
+          <a class="shop-buy" href="#" data-buy="color-pack" target="_blank" rel="noopener">購買</a>
+        </div>
+      </div>
+    </div>
+    <div class="shop-card">
+      <div class="shop-thumb">📱</div>
+      <div class="shop-body">
+        <h3>社群貼文版型組</h3>
+        <p>IG／FB 直式・方形・限動共 12 款版型，主視覺一鍵延伸成整套宣傳。</p>
+        <div class="shop-foot">
+          <span class="shop-price">NT$ <b>390</b></span>
+          <a class="shop-buy" href="#" data-buy="social-pack" target="_blank" rel="noopener">購買</a>
+        </div>
+      </div>
+    </div>
+    <div class="shop-card">
+      <div class="shop-thumb">✨</div>
+      <div class="shop-body">
+        <h3>質感素材包</h3>
+        <p>金箔・噴墨・膠片刮痕・紙紋等 40+ 高解析素材，瞬間提升海報質感。</p>
+        <div class="shop-foot">
+          <span class="shop-price">NT$ <b>590</b></span>
+          <a class="shop-buy" href="#" data-buy="texture-pack" target="_blank" rel="noopener">購買</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="shop-note">＊購買後以 Email 寄送下載連結；商品陸續上架中，想要的品項也歡迎<a href="mailto:chenstone0531@gmail.com?subject=模板商品詢問" style="color:var(--gold-light)">來信告訴我</a>。</p>
+</section>
+
 <footer>© 陳正源 STONE CHEN 電影與戲劇海報作品集</footer>
 
-<script src="images.js?v=22"></script>
-<script src="cast.js?v=22"></script>
+<script src="images.js?v=23"></script>
+<script src="cast.js?v=23"></script>
 <script>
 (function () {
   const content = document.getElementById('content');
@@ -1063,6 +1315,35 @@
   };
   ['pointerdown', 'keydown'].forEach(ev => window.addEventListener(ev, autoFS));
 
+})();
+</script>
+
+<script>
+/* ── 商品購買連結設定 ──
+   申請好收款平台（Gumroad / 蝦皮 / 街口…）後，把各商品的購買網址貼到下面對應的欄位即可。
+   留空的商品會自動改成「來信下單」，不會壞掉。 */
+(function () {
+  const BUY_LINKS = {
+    'poster-pack':  '',   // 電影感海報模板包
+    'color-pack':   '',   // 電影風配色卡 ×30
+    'social-pack':  '',   // 社群貼文版型組
+    'texture-pack': '',   // 質感素材包
+  };
+  const EMAIL = 'chenstone0531@gmail.com';
+  document.querySelectorAll('.shop-buy').forEach(a => {
+    const key = a.dataset.buy;
+    const url = BUY_LINKS[key];
+    const title = a.closest('.shop-card').querySelector('h3').textContent.trim();
+    if (url) {
+      a.href = url;
+    } else {
+      a.href = 'mailto:' + EMAIL +
+        '?subject=' + encodeURIComponent('訂購：' + title) +
+        '&body=' + encodeURIComponent('您好，我想訂購「' + title + '」，請問如何付款與取得檔案？');
+      a.removeAttribute('target');
+      a.textContent = '來信下單';
+    }
+  });
 })();
 </script>
 </body>
