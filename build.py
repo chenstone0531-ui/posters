@@ -291,7 +291,7 @@ if os.path.exists(_ef):
         EXCLUDE_FILES = set(json.load(_fh))
 
 # 不放上網站的作品（其他設計作品 = 認不出片名的雜項，全部不放）
-EXCLUDE_FILMS = {"鬼才之道", "小孩才做選擇", "心之谷（重映）", "天使之卵（數位修復版）", OTHER}
+EXCLUDE_FILMS = {"鬼才之道", "小孩才做選擇", "心之谷（重映）", "天使之卵（數位修復版）", "蒼鷺與少年", OTHER}
 
 def match_patterns(name):
     for key, film, year in PATTERNS:
